@@ -1,0 +1,27 @@
+{
+  "name": "pizza-zap",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "author": {
+    "name": "Erivelton Silva",
+    "email": "erivelton.silva@gmail.com"
+  },
+  "scripts": {
+    "build": "tsup",
+    "start": "node --env-file=.env dist/index.js",
+    "dev": "tsx --env-file=.env -r tsconfig-paths/register src/index.ts",
+    "dev:watch": "tsx --env-file=.env -r tsconfig-paths/register watch src/index.ts",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
