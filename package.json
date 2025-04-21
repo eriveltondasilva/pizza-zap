@@ -15,9 +15,15 @@
     "start": "node --env-file=.env dist/index.js",
     "dev": "tsx --env-file=.env -r tsconfig-paths/register src/index.ts",
     "dev:watch": "tsx --env-file=.env -r tsconfig-paths/register watch src/index.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+
+    "fmt": "biome format --fix --verbose src",
+    "lint": "biome lint --fix --unsafe --verbose src",
+    "check": "biome check --fix --unsafe --verbose src",
+    "type:check": "tsc --noEmit"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^22.14.1",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.4.0",
