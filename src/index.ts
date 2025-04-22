@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { type Whatsapp, create } from '@wppconnect-team/wppconnect'
 
 create({
