@@ -1,45 +1,23 @@
 import 'reflect-metadata'
+import { container } from 'tsyringe'
 
-import { type Whatsapp, create } from '@wppconnect-team/wppconnect'
+import { LoggerProvider } from '@/providers/logger.js'
+import { setupGracefulShutdown } from './graceful-shutdown.js'
+import { WhatsappBot } from './whatsapp-bot.js'
 
-create({
-  phoneNumber: '5582999723607',
-  disableWelcome: true,
-})
-  .then((client) => start(client))
-  .catch((error) => console.log(error))
+async function bootstrap(): Promise<void> {
+  const logger = container.resolve(LoggerProvider)
+  logger.info('🟢 Iniciando aplicação...')
 
-function start(client: Whatsapp) {
-  client.onAnyMessage((message) => {
-    if (message.body === 'Hello') {
-      client
-        .sendListMessage(message.from, {
-          buttonText: 'Click here',
-          description: 'Choose one option',
-          sections: [
-            {
-              title: 'Section 1',
-              rows: [
-                {
-                  rowId: 'my_custom_id',
-                  title: 'Test 1',
-                  description: 'Description 1',
-                },
-                {
-                  rowId: '2',
-                  title: 'Test 2',
-                  description: 'Description 2',
-                },
-              ],
-            },
-          ],
-        })
-        .then((result) => {
-          console.log('Result: ', result)
-        })
-        .catch((erro) => {
-          console.error('Error when sending: ', erro)
-        })
-    }
-  })
+  try {
+    const bot = container.resolve(WhatsappBot)
+    setupGracefulShutdown(bot, logger)
+
+    await bot.initialize()
+  } catch (error) {
+    logger.error('Falha na validação de configurações', error)
+    process.exit(1)
+  }
 }
+
+bootstrap()
