@@ -8,7 +8,7 @@ import { inject, singleton } from 'tsyringe'
 import { ERIVELTON_NUMBER, SESSION_NAME } from '@/config/constants.js'
 import { LoggerProvider } from './logger.js'
 
-export interface IWhatsappClientProvider {
+interface IWhatsappClientProvider {
   getClient(): Promise<Whatsapp>
   closeClient(): Promise<void>
 }

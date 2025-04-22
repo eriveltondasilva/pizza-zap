@@ -54,7 +54,7 @@ export class LoggerProvider implements ILogger {
   //#
   private createLogger(): WinstonLogger {
     const logger = createLogger({
-        // defaultMeta: { service: SESSION_NAME },
+      // defaultMeta: { service: SESSION_NAME },
       level: this.isProduction ? 'info' : 'debug',
       transports: this.createFileTransports(),
     })
