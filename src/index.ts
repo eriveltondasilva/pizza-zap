@@ -10,10 +10,10 @@ async function bootstrap(): Promise<void> {
   logger.info('🟢 Iniciando aplicação...')
 
   try {
-    const bot = container.resolve(WhatsappBot)
-    setupGracefulShutdown(bot, logger)
+    const whatsappBot = container.resolve(WhatsappBot)
+    setupGracefulShutdown(whatsappBot, logger)
 
-    await bot.initialize()
+    await whatsappBot.initialize()
   } catch (error) {
     logger.error('Falha na validação de configurações', error)
     process.exit(1)
