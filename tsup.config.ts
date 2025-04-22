@@ -7,5 +7,4 @@ export default defineConfig({
   minify: false,
   clean: true,
   dts: true,
-  tsconfig: './tsconfig.json',
 })
