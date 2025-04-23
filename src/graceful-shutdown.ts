@@ -9,14 +9,14 @@ const PROCESS_EVENTS = {
 } as const
 
 export function setupGracefulShutdown(
-  bot: WhatsappBot,
+  whatsappBot: WhatsappBot,
   logger: LoggerProvider,
 ): void {
   const shutdownHandler = async (signal: string): Promise<void> => {
     logger.info(`🔴 Desligando o bot devido ao sinal ((${signal}))...`)
 
     try {
-      await bot.shutdown()
+      await whatsappBot.shutdown()
       process.exit(0)
     } catch (error) {
       logger.error('Falha ao desligar o bot\n', error)
@@ -25,18 +25,19 @@ export function setupGracefulShutdown(
   }
 
   process.on(PROCESS_EVENTS.UNCAUGHT_EXCEPTION, (error) => {
-    logger.error('Exceção não capturada:', error)
+    logger.error('Exceção não capturada\n', error)
     shutdownHandler(PROCESS_EVENTS.UNCAUGHT_EXCEPTION)
   })
 
   process.on(PROCESS_EVENTS.UNHANDLED_REJECTION, (reason) => {
-    logger.error('Rejeição não tratada:', reason)
+    logger.error('Rejeição não tratada\n', reason)
   })
 
   //#
   process.on(PROCESS_EVENTS.SIGINT, () =>
     shutdownHandler(PROCESS_EVENTS.SIGINT),
   )
+  
   process.on(PROCESS_EVENTS.SIGTERM, () =>
     shutdownHandler(PROCESS_EVENTS.SIGTERM),
   )
