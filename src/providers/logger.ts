@@ -1,12 +1,7 @@
 import { join } from 'node:path'
 import { env } from 'node:process'
 import { singleton } from 'tsyringe'
-import {
-  type Logger as WinstonLogger,
-  createLogger,
-  format,
-  transports,
-} from 'winston'
+import { type Logger as WinstonLogger, createLogger, format, transports } from 'winston'
 
 type LogMeta = Record<string, unknown>
 

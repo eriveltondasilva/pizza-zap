@@ -1,8 +1,4 @@
-import {
-  type CreateOptions,
-  type Whatsapp,
-  create,
-} from '@wppconnect-team/wppconnect'
+import { type CreateOptions, type Whatsapp, create } from '@wppconnect-team/wppconnect'
 import { inject, singleton } from 'tsyringe'
 
 import { ERIVELTON_NUMBER, SESSION_NAME } from '@/config/constants.js'

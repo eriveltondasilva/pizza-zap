@@ -1,10 +1,7 @@
 import type { Message } from '@wppconnect-team/wppconnect'
 import { inject, injectable } from 'tsyringe'
 
-import {
-  ListSenderService,
-  TextSenderService,
-} from '@/services/senders/index.js'
+import { ListSenderService, TextSenderService } from '@/services/senders/index.js'
 import { LoggerProvider, WhatsappClientProvider } from './providers/index.js'
 
 interface IWhatsappBot {
@@ -54,8 +51,7 @@ export class WhatsappBot implements IWhatsappBot {
 
     const client = await this.client.getClient()
     const { type, content } = { type: 'list', content: 'Hello' }
-    const sender =
-      type === 'text' ? this.textMessageSender : this.listMessageSender
+    const sender = type === 'text' ? this.textMessageSender : this.listMessageSender
 
     await sender.send(client, from, { text: 'Hello', list: [] })
     //

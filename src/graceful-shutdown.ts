@@ -8,10 +8,7 @@ const PROCESS_EVENTS = {
   UNHANDLED_REJECTION: 'unhandledRejection',
 } as const
 
-export function setupGracefulShutdown(
-  whatsappBot: WhatsappBot,
-  logger: LoggerProvider,
-): void {
+export function setupGracefulShutdown(whatsappBot: WhatsappBot, logger: LoggerProvider): void {
   const shutdownHandler = async (signal: string): Promise<void> => {
     logger.info(`🔴 Desligando o bot devido ao sinal ((${signal}))...`)
 
@@ -34,11 +31,7 @@ export function setupGracefulShutdown(
   })
 
   //#
-  process.on(PROCESS_EVENTS.SIGINT, () =>
-    shutdownHandler(PROCESS_EVENTS.SIGINT),
-  )
-  
-  process.on(PROCESS_EVENTS.SIGTERM, () =>
-    shutdownHandler(PROCESS_EVENTS.SIGTERM),
-  )
+  process.on(PROCESS_EVENTS.SIGINT, () => shutdownHandler(PROCESS_EVENTS.SIGINT))
+
+  process.on(PROCESS_EVENTS.SIGTERM, () => shutdownHandler(PROCESS_EVENTS.SIGTERM))
 }
