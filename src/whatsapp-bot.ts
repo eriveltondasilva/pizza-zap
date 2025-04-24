@@ -1,13 +1,26 @@
 import type { Message } from '@wppconnect-team/wppconnect'
 import { inject, injectable } from 'tsyringe'
 
+import {
+  ListSenderService,
+  TextSenderService,
+} from '@/services/senders/index.js'
 import { LoggerProvider, WhatsappClientProvider } from './providers/index.js'
 
+interface IWhatsappBot {
+  initialize(): Promise<void>
+  shutdown(): Promise<void>
+}
+
 @injectable()
-export class WhatsappBot {
+export class WhatsappBot implements IWhatsappBot {
   constructor(
     @inject(WhatsappClientProvider)
     private readonly client: WhatsappClientProvider,
+    @inject(TextSenderService)
+    private readonly textMessageSender: TextSenderService,
+    @inject(ListSenderService)
+    private readonly listMessageSender: ListSenderService,
     @inject(LoggerProvider) private readonly logger: LoggerProvider,
   ) {}
 
@@ -40,30 +53,11 @@ export class WhatsappBot {
     if (body !== 'Hello') return
 
     const client = await this.client.getClient()
-    await client.sendText(
-      from,
-      '[BOT] Olá, eu sou o Bot do Erivelton. Como posso te ajudar?',
-    )
-    await client.sendListMessage(from, {
-      buttonText: 'Click here',
-      description: '[BOT] Choose one option',
-      sections: [
-        {
-          title: 'Section 1',
-          rows: [
-            {
-              rowId: 'my_custom_id',
-              title: 'Test 1',
-              description: 'Description 1',
-            },
-            {
-              rowId: '2',
-              title: 'Test 2',
-              description: 'Description 2',
-            },
-          ],
-        },
-      ],
-    })
+    const { type, content } = { type: 'list', content: 'Hello' }
+    const sender =
+      type === 'text' ? this.textMessageSender : this.listMessageSender
+
+    await sender.send(client, from, { text: 'Hello', list: [] })
+    //
   }
 }
