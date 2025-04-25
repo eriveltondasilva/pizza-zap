@@ -1,7 +1,8 @@
+import type { Customer } from '@/types/entities.js'
 import customers from './data/customers-seed.json' with { type: 'json' }
 
 export class CustomerRepository {
-  async findByPhone(phone: string) {
+  async findByPhone(phone: string): Promise<Customer | undefined> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(customers.find((customer) => customer.phone === phone))

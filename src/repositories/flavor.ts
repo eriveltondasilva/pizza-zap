@@ -1,7 +1,8 @@
+import type { Flavor } from '@/types/entities.js'
 import flavors from './data/flavors-seed.json' with { type: 'json' }
 
 export class FlavorRepository {
-  async getAllFlavors() {
+  async getAll(): Promise<Flavor[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(flavors)
