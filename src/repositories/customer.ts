@@ -10,11 +10,9 @@ export class CustomerRepository {
     })
   }
 
-  // async create(data: Prisma.CustomerCreateInput) {
-  //   return await prisma.customer.create({
-  //     data,
-  //   })
-  // }
+  async create(data: Customer) {
+    return customers[1]
+  }
 
   // async update(phone: string, data: Prisma.CustomerUpdateInput) {
   //   return await prisma.customer.update({
