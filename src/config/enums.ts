@@ -53,6 +53,25 @@ export enum ORDER_OPTIONS {
   CANCEL = '0',
 }
 
+export enum PAYMENT_OPTIONS {
+  CREDIT = '1',
+  DEBIT = '2',
+  CASH = '3',
+  PIX = '4',
+  CANCEL = '0',
+}
+
+export enum CONFIRM_OPTIONS {
+  CONFIRM = '1',
+  CANCEL = '0',
+}
+
+export enum CHANGE_OPTIONS {
+  NEED_CHANGE = '1',
+  NO_CHANGE = '2',
+  CANCEL = '0',
+}
+
 // ###
 export enum FLOWS {
   //* Fluxos de registro do usuário
