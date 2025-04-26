@@ -1,0 +1,41 @@
+import { inject, injectable } from 'tsyringe'
+
+import { ListResponseBuilder } from '@/builders/responses/list.js'
+import { FLOWS } from '@/config/enums.js'
+import { DrinkRepository } from '@/repositories/drink.js'
+import { buildDrinkList } from '@/utils/list-builder.js'
+import { BaseFlow } from '../base.flow.js'
+import { STEP_INDICATORS } from './@drink.js'
+
+import type { FlowParams } from '@/types/flows.js'
+
+@injectable()
+export class DrinkStartFlow extends BaseFlow {
+  constructor(
+    @inject(DrinkRepository) private readonly drinkRepository: DrinkRepository,
+    @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
+  ) {
+    super()
+  }
+
+  public async handle({ phone }: FlowParams) {
+    const drinks = await this.drinkRepository.getAll()
+
+    if (!drinks?.length) {
+      this.state.resetState(phone)
+      return this.responseBuilder
+        .addText('❌ Desculpe, não encontramos bebidas disponíveis no momento.')
+        .build()
+    }
+
+    this.state.updateFlow(phone, FLOWS.DRINK_SELECTION)
+
+    return this.listResponseBuilder
+      .addCode(STEP_INDICATORS.DRINK)
+      .addEmptyLine()
+      .addBold('🍹 ESCOLHA SUA BEBIDA')
+      .addQuote('Por favor, aperte o botão abaixo para escolher a sua bebida.')
+      .addList(buildDrinkList(drinks))
+      .build()
+  }
+}
