@@ -1,3 +1,4 @@
+import type { ResponseContent } from '@/types/responses.js'
 import type { Whatsapp } from '@wppconnect-team/wppconnect'
 
 export interface ISender {

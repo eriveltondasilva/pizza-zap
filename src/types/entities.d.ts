@@ -1,6 +1,7 @@
 import type { ITEM_TYPES } from '@/config/enums.js'
 
 export type Flavor = {
+  id?: string
   name: string
   description: string
   category: string
