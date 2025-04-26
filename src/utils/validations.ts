@@ -59,10 +59,10 @@ export function isValidMessage(message: Message): boolean {
   // }
 
   // TODO: Remove validation
-  if (message.from !== ERIVELTON_NUMBER) {
-    // logger.warn('Message validation failed: message is not from Erivelton', {
-    // from: message.from,
-    // })
+  if (!message.from.includes(ERIVELTON_NUMBER)) {
+    logger.warn('Message validation failed: message is not from Erivelton', {
+      from: message.from,
+    })
     return false
   }
 
