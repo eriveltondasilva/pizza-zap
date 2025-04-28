@@ -47,7 +47,7 @@ export class RegistrationAddressFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.MENU)
 
     return this.responseBuilder
-      .addText('🎉 Cadastro concluído com sucesso,', name.split(' ', 1)[0])
+      .addText('🎉 Cadastro concluído com sucesso,', name.split(' ')[0])
       .addText('Agora, vamos ao que interessa: _*escolher algo gostoso*_! 😋')
       .addEmptyLine()
       .addMenu(mainMenu)
