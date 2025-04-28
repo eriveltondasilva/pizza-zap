@@ -49,14 +49,12 @@ export const paymentMenu = [
   '2️⃣ - Cartão de Débito 💳',
   '3️⃣ - Dinheiro 💵',
   '4️⃣ - Pix 📲',
-  '5️⃣ - Atualizar Endereço 📝',
-  '0️⃣ - Cancelar Pedido ❌',
   '',
   menuFooter,
 ]
 
 export const confirmMenu = [
-  '🔢 *MENU DE CONFIRMAÇÃO*',
+  '🆗 *MENU DE CONFIRMAÇÃO*',
   '',
   '1️⃣ - Confirmar ✅',
   '2️⃣ - Cancelar ❌',
