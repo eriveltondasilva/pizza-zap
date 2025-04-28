@@ -11,6 +11,7 @@ export type ContextData = {
   selectedPayment: PAYMENT_METHODS
   deliveryAddress: string
   totalAmount: number
+  isUpdatingAddress: boolean
   change?: number
   observations?: string
 }
