@@ -10,7 +10,6 @@ export class CheckoutAddressFlow extends BaseFlow {
     const data = context.data as ContextData
 
     if (!isConfirmed) {
-      this.state.updateData(phone, { deliveryAddress: null })
       return this.responseBuilder
         .addText('📍 Digite seu endereço completo:')
         .addQuote('Ex: Rua das Flores, 123 - Bairro Jardim, Cidade - Complemento, CEP')
