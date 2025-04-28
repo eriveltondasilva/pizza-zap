@@ -101,5 +101,8 @@ export enum FLOWS {
   //* Fluxos de pagamento
   CHECKOUT_START = 'checkout_start',
   CHECKOUT_PAYMENT = 'checkout_payment',
+  CHECKOUT_CHANGE = 'checkout_change',
+  CHECKOUT_ADDRESS = 'checkout_address',
+  CHECKOUT_OBSERVATIONS = 'checkout_observations',
   CHECKOUT_FINISH = 'checkout_finish',
 }
