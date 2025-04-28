@@ -20,9 +20,31 @@ export class StateFacade {
     @inject(StateManager) private readonly stateManager: StateManager,
   ) {}
 
-  //# CONTEXT METHODS
+  //# STATE MANAGEMENT
   public getState(phone: string): FlowState {
     return this.stateManager.get(phone)
+  }
+
+  public hasState(phone: string): boolean {
+    return this.stateManager.has(phone)
+  }
+
+  public resetState(phone: string): FlowState {
+    return this.stateManager.reset(phone)
+  }
+
+  public deleteState(phone: string): boolean {
+    return this.stateManager.delete(phone)
+  }
+
+  public clearAllStates(): void {
+    this.stateManager.clearAllStates()
+  }
+
+  //# CONTEXT METHODS
+  public getContext(phone: string): FlowContext {
+    const state = this.getState(phone)
+    return state.context || {}
   }
 
   public updateContext(phone: string, context: Partial<FlowContext>): FlowState {
@@ -46,12 +68,22 @@ export class StateFacade {
   }
 
   //# CUSTOMER METHODS
+  public getCustomer(phone: string): Customer {
+    const state = this.getState(phone)
+    return state.customer || {}
+  }
+
   public updateCustomer(phone: string, customer: Partial<Customer>): FlowState {
     const state = this.getState(phone)
     return this.customerService.updateCustomer(phone, state, customer)
   }
 
   //# CART METHODS
+  public getCart(phone: string): CartItem[] {
+    const state = this.getState(phone)
+    return state.cart || []
+  }
+
   public addToCart(phone: string, item: CartItem): FlowState {
     const state = this.getState(phone)
     return this.cartService.addToCart(phone, state, item)
@@ -71,21 +103,4 @@ export class StateFacade {
   //   const state = this.getState(phone)
   //   return this.cartService.getCartTotal(state)
   // }
-
-  //# STATE MANAGEMENT
-  public hasState(phone: string): boolean {
-    return this.stateManager.has(phone)
-  }
-
-  public resetState(phone: string): FlowState {
-    return this.stateManager.reset(phone)
-  }
-
-  public deleteState(phone: string): boolean {
-    return this.stateManager.delete(phone)
-  }
-
-  public clearAllStates(): void {
-    this.stateManager.clearAllStates()
-  }
 }
