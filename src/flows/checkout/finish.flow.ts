@@ -6,33 +6,39 @@ import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
 
+const MESSAGE_SUCCEED = {
+  TITLE: '✅ PEDIDO REGISTRADO!',
+  SUBTITLE:
+    'Obrigado pela preferência! Seu pedido foi registrado e será preparado em breve.\nTempo estimado de entrega: _30-45 minutos_',
+}
+
+const MESSAGE_CANCELED = {
+  TITLE: '❌ PEDIDO CANCELADO',
+  SUBTITLE: 'Você pode continuar comprando ou fechar o pedido.',
+}
+
 @injectable()
 export class CheckoutFinishFlow extends BaseFlow {
-  public async handle({ phone, message }: FlowParams) {
+  public async handle({ phone, message, context }: FlowParams) {
     const isCanceled = message === '0'
-
-    this.state.clearCart(phone)
-    this.state.clearData(phone)
+    const nextFlow = isCanceled ? FLOWS.ORDER : FLOWS.MENU
+    const messageData = isCanceled ? MESSAGE_CANCELED : MESSAGE_SUCCEED
+    const menu = isCanceled ? orderMenu : mainMenu
 
     if (!isCanceled) {
-      this.state.updateFlow(phone, FLOWS.ORDER)
-      return this.responseBuilder
-        .addBold('❌ PEDIDO CANCELADO')
-        .addText('Você pode continuar comprando ou fechar o pedido.')
-        .addEmptyLine()
-        .addMenu(orderMenu)
-        .build()
+      // TODO: register order
     }
 
-    this.state.updateFlow(phone, FLOWS.MENU)
+    this.state.clearData(phone)
+    this.state.clearCart(phone)
+
+    this.state.updateFlow(phone, nextFlow)
 
     return this.responseBuilder
-      .addBold('✅ PEDIDO REGISTRADO!')
-      .addText('Obrigado pela preferência!', 'Seu pedido foi registrado e será preparado em breve.')
+      .addBold(messageData.TITLE)
+      .addText(messageData.SUBTITLE)
       .addEmptyLine()
-      .addText('Tempo estimado de entrega: _30-45 minutos_')
-      .addEmptyLine()
-      .addMenu(mainMenu)
+      .addMenu(menu)
       .build()
   }
 }

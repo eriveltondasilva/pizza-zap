@@ -5,14 +5,13 @@ import { formatCurrency } from '@/utils/format-currency.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
-import type { ContextData } from './types.js'
+import { type ContextData, STEP_INDICATORS } from './types.js'
 
 @injectable()
 export class CheckoutChangeFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const changeAmount = Number.parseFloat(message.replace(',', '.'))
-    const data = context.data as ContextData
-    const totalAmount = data.totalAmount || 0
+    const { totalAmount } = context.data as ContextData
 
     if (Number.isNaN(changeAmount) || changeAmount < 0) {
       return this.responseBuilder
@@ -33,14 +32,16 @@ export class CheckoutChangeFlow extends BaseFlow {
         .build()
     }
 
+    const customer = this.state.getCustomer(phone)
+
     this.state.updateContext(phone, {
-      data: { change: changeAmount },
+      data: { change: changeAmount, deliveryAddress: customer.address },
       flow: FLOWS.CHECKOUT_ADDRESS,
     })
 
-    const customer = this.state.getCustomer(phone)
-
     return this.responseBuilder
+      .addCode(STEP_INDICATORS.ADDRESS)
+      .addEmptyLine()
       .addBold('📍 ENDEREÇO DE ENTREGA')
       .addText('Encontramos o endereço em seu cadastro:')
       .addQuote(customer.address)

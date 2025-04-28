@@ -5,30 +5,31 @@ import { formatCurrency } from '@/utils/format-currency.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
-import type { ContextData } from './types.js'
+import { type ContextData, STEP_INDICATORS } from './types.js'
 
 @injectable()
 export class CheckoutObservationsFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
-    const data = context.data as ContextData
     const observations = message === '0' ? undefined : message
+    const { totalAmount, change, selectedPayment, deliveryAddress } = context.data as ContextData
 
     this.state.updateContext(phone, {
       data: { observations },
       flow: FLOWS.CHECKOUT_FINISH,
     })
 
-    const formattedTotal = formatCurrency(data.totalAmount || 0)
-    const formattedChange = data.change ? formatCurrency(data.change) : 'Não necessário'
+    const formattedTotal = formatCurrency(totalAmount)
+    const formattedChange = change ? formatCurrency(change) : 'Não necessário'
 
     return this.responseBuilder
+      .addCode(STEP_INDICATORS.FINISH)
       .addMono()
       .addText('# CONFIRMAÇÃO DO PEDIDO')
       .addLine()
       .addText('Total:', formattedTotal)
-      .addText('Pagamento:', data.selectedPayment || 'Não informado')
+      .addText('Pagamento:', selectedPayment)
       .addText('Troco para:', formattedChange)
-      .addText('Endereço:', data?.deliveryAddress || 'Não informado')
+      .addText('Endereço:', deliveryAddress)
       .addEmptyLine()
       .addText('Observações:', observations || 'nenhuma')
       .addLine()

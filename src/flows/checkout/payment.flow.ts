@@ -5,6 +5,7 @@ import { paymentMenu } from '@/templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
+import { STEP_INDICATORS } from './types.js'
 
 const PAYMENT_MAP: Record<number, PAYMENT_METHODS> = {
   1: PAYMENT_METHODS.CREDIT,
@@ -36,7 +37,7 @@ export class CheckoutPaymentFlow extends BaseFlow {
 
       return this.responseBuilder
         .addText('💵 Para quanto deseja troco?')
-        .addQuote(`Digite o valor para troco ou "0" se não precisar.`)
+        .addQuote(`Digite o valor para troco ou "0" se não precisar de troco.`)
         .build()
     }
 
@@ -48,8 +49,10 @@ export class CheckoutPaymentFlow extends BaseFlow {
     })
 
     return this.responseBuilder
+      .addCode(STEP_INDICATORS.ADDRESS)
+      .addEmptyLine()
       .addBold('📍 ENDEREÇO DE ENTREGA')
-      .addText('Encontramos o endereço em seu cadastro:')
+      .addText('Encontramos o endereço abaixo em seu cadastro:')
       .addQuote(customer.address)
       .addEmptyLine()
       .addText('Deseja utilizar este endereço?')

@@ -7,6 +7,7 @@ import { BaseFlow } from '../base.flow.js'
 
 import type { CartItem } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
+import { STEP_INDICATORS } from './types.js'
 
 @injectable()
 export class CheckoutStartFlow extends BaseFlow {
@@ -36,6 +37,7 @@ export class CheckoutStartFlow extends BaseFlow {
     })
 
     return this.responseBuilder
+      .addCode(STEP_INDICATORS.SUMMARY)
       .addMono()
       .addText('# RESUMO DO PEDIDO')
       .addLine()
