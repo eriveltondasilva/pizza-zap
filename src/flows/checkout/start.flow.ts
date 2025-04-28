@@ -11,23 +11,24 @@ import type { FlowParams } from '@/types/flows.js'
 @injectable()
 export class CheckoutStartFlow extends BaseFlow {
   public async handle({ phone }: FlowParams) {
-    const { customer, cart } = this.state.getState(phone)
+    const cart = this.state.getCart(phone)
 
-    if (cart?.length === 0) {
+    if (cart.length === 0) {
       this.state.updateFlow(phone, FLOWS.ORDER)
       return this.responseBuilder
         .addBold('❌ CARRINHO VAZIO')
         .addText(
           'Seu carrinho está vazio.',
-          'Por favor, adicione itens antes de finalizar o pedido.',
+          'Por favor, adicione itens ao carrinho antes de finalizar o pedido.',
         )
         .addEmptyLine()
         .addMenu(orderMenu)
         .build()
     }
 
+    const cartSummary = this.createCartSummary(cart)
     const totalAmount = this.calculateTotal(cart)
-    const formattedTotalAmount = formatCurrency(totalAmount)
+    const formattedTotal = formatCurrency(totalAmount)
 
     this.state.updateContext(phone, {
       data: { totalAmount },
@@ -38,11 +39,9 @@ export class CheckoutStartFlow extends BaseFlow {
       .addMono()
       .addText('# RESUMO DO PEDIDO')
       .addLine()
-      .addText('Itens do pedido:')
-      .addBulletList(this.formatCartItems(cart))
+      .addBulletList(cartSummary)
       .addEmptyLine()
-      .addText('Endereço:', customer.address)
-      .addText('Total:', formattedTotalAmount)
+      .addText('Total:', formattedTotal)
       .addLine()
       .addMono()
       .addMenu(paymentMenu)
@@ -50,14 +49,12 @@ export class CheckoutStartFlow extends BaseFlow {
   }
 
   private calculateTotal(cart: CartItem[]): number {
-    return cart.reduce((total, item) => {
-      return total + item.subtotal
-    }, 0)
+    return cart.reduce((total, item) => total + item.subtotal, 0)
   }
 
-  private formatCartItems(cart: CartItem[]): string[] {
+  private createCartSummary(cart: CartItem[]): string[] {
     return cart.map((item) => {
-      return `${item.quantity}x ${item.name} = ${formatCurrency(item.subtotal)}`
+      return `${item.quantity}x ${item.name} - ${formatCurrency(item.subtotal)}`
     })
   }
 }

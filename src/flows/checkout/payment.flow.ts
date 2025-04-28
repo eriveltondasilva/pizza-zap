@@ -2,12 +2,11 @@ import { injectable } from 'tsyringe'
 
 import { FLOWS, PAYMENT_METHODS } from '@/config/enums.js'
 import { paymentMenu } from '@/templates/menus.js'
-import { formatCurrency } from '@/utils/format-currency.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
 
-const METHODS_MAP = {
+const PAYMENT_MAP: Record<number, PAYMENT_METHODS> = {
   1: PAYMENT_METHODS.CREDIT,
   2: PAYMENT_METHODS.DEBIT,
   3: PAYMENT_METHODS.CASH,
@@ -16,16 +15,11 @@ const METHODS_MAP = {
 
 @injectable()
 export class CheckoutPaymentFlow extends BaseFlow {
-  public async handle({ phone, message, context }: FlowParams) {
-    if (message === '0') {
-      this.state.resetState(phone)
-      return this.responseBuilder.addText('❌ Pedido cancelado!').build()
-    }
-
+  public async handle({ phone, message }: FlowParams) {
     const selectedIndex = Number.parseInt(message, 10)
-    const paymentMethod = METHODS_MAP[selectedIndex as keyof typeof METHODS_MAP]
+    const selectedPayment = PAYMENT_MAP[selectedIndex]
 
-    if (!paymentMethod) {
+    if (!selectedPayment) {
       return this.responseBuilder
         .addBold('❌ MÉTODO DE PAGAMENTO INVÁLIDO')
         .addText('Por favor, escolha uma das opções abaixo:')
@@ -34,24 +28,33 @@ export class CheckoutPaymentFlow extends BaseFlow {
         .build()
     }
 
-    const { totalAmount } = context.data as { totalAmount: number }
+    if (selectedPayment === PAYMENT_METHODS.CASH) {
+      this.state.updateContext(phone, {
+        data: { selectedPayment },
+        flow: FLOWS.CHECKOUT_CHANGE,
+      })
+
+      return this.responseBuilder
+        .addText('💵 Para quanto deseja troco?')
+        .addQuote(`Digite o valor para troco ou "0" se não precisar.`)
+        .build()
+    }
+
+    const customer = this.state.getCustomer(phone)
 
     this.state.updateContext(phone, {
-      data: { paymentMethod },
-      flow: FLOWS.CHECKOUT_FINISH,
+      data: { selectedPayment, deliveryAddress: customer.address },
+      flow: FLOWS.CHECKOUT_ADDRESS,
     })
 
     return this.responseBuilder
-      .addMono()
-      .addText('# DETALHES DO PAGAMENTO')
-      .addLine()
-      .addText('Método:', paymentMethod)
-      .addText('Total:', formatCurrency(totalAmount))
-      .addLine()
-      .addMono()
-      .addText('Deseja confirmar o pagamento?')
-      .addText('1️⃣ - Confirmar ✅')
-      .addText('0️⃣ - Cancelar ❌')
+      .addBold('📍 ENDEREÇO DE ENTREGA')
+      .addText('Encontramos o endereço em seu cadastro:')
+      .addQuote(customer.address)
+      .addEmptyLine()
+      .addText('Deseja utilizar este endereço?')
+      .addText('1️⃣ - Sim, manter este endereço')
+      .addText('2️⃣ - Não, quero informar um novo endereço')
       .build()
   }
 }

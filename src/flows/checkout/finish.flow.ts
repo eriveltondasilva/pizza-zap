@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto'
 import { injectable } from 'tsyringe'
 
 import { FLOWS } from '@/config/enums.js'
@@ -12,11 +11,13 @@ export class CheckoutFinishFlow extends BaseFlow {
   public async handle({ phone, message }: FlowParams) {
     const isCanceled = message === '0'
 
-    this.state.deleteState(phone)
+    this.state.clearCart(phone)
+    this.state.clearData(phone)
 
-    if (isCanceled) {
+    if (!isCanceled) {
+      this.state.updateFlow(phone, FLOWS.ORDER)
       return this.responseBuilder
-        .addBold('❌ PAGAMENTO CANCELADO')
+        .addBold('❌ PEDIDO CANCELADO')
         .addText('Você pode continuar comprando ou fechar o pedido.')
         .addEmptyLine()
         .addMenu(orderMenu)
@@ -27,16 +28,11 @@ export class CheckoutFinishFlow extends BaseFlow {
 
     return this.responseBuilder
       .addBold('✅ PEDIDO REGISTRADO!')
-      .addText('Obrigado pela sua compra.', 'Seu pedido foi registrado e será preparado em breve.')
+      .addText('Obrigado pela preferência!', 'Seu pedido foi registrado e será preparado em breve.')
       .addEmptyLine()
-      .addText('Tempo estimado de entrega: *30-45 minutos*')
-      .addText('Número do pedido:', this.generateOrderNumber())
+      .addText('Tempo estimado de entrega: _30-45 minutos_')
       .addEmptyLine()
       .addMenu(mainMenu)
       .build()
-  }
-
-  private generateOrderNumber(): string {
-    return `*#${randomUUID()}*`
   }
 }
