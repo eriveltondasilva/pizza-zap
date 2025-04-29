@@ -8,8 +8,10 @@ import type { FlowParams } from '@/types/flows.js'
 
 const MESSAGE_SUCCEED = {
   TITLE: '✅ PEDIDO REGISTRADO!',
-  SUBTITLE:
-    'Obrigado pela preferência! Seu pedido foi registrado e será preparado em breve.\nTempo estimado de entrega: _30-45 minutos_',
+  SUBTITLE: [
+    'Obrigado pela preferência! Seu pedido foi registrado e será preparado em breve.',
+    'Tempo estimado de entrega: _30-45 minutos_',
+  ].join('\n'),
 }
 
 const MESSAGE_CANCELED = {
