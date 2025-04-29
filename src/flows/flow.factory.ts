@@ -28,7 +28,14 @@ import {
   DrinkStartFlow,
 } from './drink/index.js'
 
-import { CheckoutFinishFlow, CheckoutPaymentFlow, CheckoutStartFlow } from './checkout/index.js'
+import {
+  CheckoutAddressFlow,
+  CheckoutChangeFlow,
+  CheckoutFinishFlow,
+  CheckoutObservationsFlow,
+  CheckoutPaymentFlow,
+  CheckoutStartFlow,
+} from './checkout/index.js'
 
 import type { BaseFlow } from './base.flow.js'
 
@@ -64,6 +71,9 @@ export class FlowFactory {
       //* Payment flows
       [FLOWS.CHECKOUT_START, CheckoutStartFlow],
       [FLOWS.CHECKOUT_PAYMENT, CheckoutPaymentFlow],
+      [FLOWS.CHECKOUT_ADDRESS, CheckoutAddressFlow],
+      [FLOWS.CHECKOUT_CHANGE, CheckoutChangeFlow],
+      [FLOWS.CHECKOUT_OBSERVATIONS, CheckoutObservationsFlow],
       [FLOWS.CHECKOUT_FINISH, CheckoutFinishFlow],
       //* Other flows
     ])
