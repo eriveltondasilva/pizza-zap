@@ -22,10 +22,10 @@ export class PizzaFlavorFlow extends BaseFlow {
 
   public async handle({ context, phone, message }: FlowParams) {
     const flavors = await this.flavorRepository.getAll()
-    const selectedIndex = parseIndex(message)
+    const selectedFlavorIndex = parseIndex(message)
     const data = context.data as ContextData
 
-    if (!flavors[selectedIndex]) {
+    if (!flavors[selectedFlavorIndex]) {
       return this.listResponseBuilder
         .addBold('❌ OPÇÃO INVÁLIDA!')
         .addText('Por favor, escolha uma das opções disponíveis abaixo.')
@@ -33,7 +33,7 @@ export class PizzaFlavorFlow extends BaseFlow {
         .build()
     }
 
-    const selectedFlavors = [...(data.selectedFlavors || []), flavors[selectedIndex]]
+    const selectedFlavors = [...(data.selectedFlavors || []), flavors[selectedFlavorIndex]]
 
     if (!data.isSingleFlavor && selectedFlavors.length === 1) {
       this.state.updateData(phone, { selectedFlavors })
