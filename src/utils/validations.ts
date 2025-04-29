@@ -1,3 +1,4 @@
+//# TODO: removendo as validações para a pasta src\validations e refatorando para classes
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 import { container } from 'tsyringe'
 
