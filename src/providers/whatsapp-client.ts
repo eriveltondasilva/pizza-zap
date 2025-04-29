@@ -1,7 +1,7 @@
 import { type CreateOptions, type Whatsapp, create } from '@wppconnect-team/wppconnect'
 import { inject, singleton } from 'tsyringe'
 
-import { ERIVELTON_NUMBER, SESSION_NAME } from '@/config/constants.js'
+import { PHONE_NUMBER, SESSION_NAME } from '@/config/constants.js'
 import { LoggerProvider } from './logger.js'
 
 interface IWhatsappClientProvider {
@@ -14,7 +14,7 @@ export class WhatsappClientProvider implements IWhatsappClientProvider {
   private client: Whatsapp | null = null
   private readonly clientOptions: CreateOptions = {
     session: SESSION_NAME,
-    phoneNumber: ERIVELTON_NUMBER,
+    phoneNumber: PHONE_NUMBER,
     disableWelcome: true,
   }
 

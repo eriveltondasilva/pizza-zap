@@ -1,4 +1,4 @@
-import { ERIVELTON_NUMBER } from '@/config/constants.js'
+import { PHONE_NUMBER } from '@/config/constants.js'
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 
 interface Validation {
@@ -13,7 +13,7 @@ export class MessageValidation implements Validation {
 
   validate(message: Message): boolean {
     // Validação para número permitido
-    if (!message.from.startsWith(ERIVELTON_NUMBER)) {
+    if (!message.from.startsWith(PHONE_NUMBER)) {
       this.errorMessage = 'Mensagem inválida: remetente não autorizado'
       return false
     }

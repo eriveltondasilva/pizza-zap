@@ -1,7 +1,7 @@
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 import { container } from 'tsyringe'
 
-import { ERIVELTON_NUMBER } from '@/config/constants.js'
+import { PHONE_NUMBER } from '@/config/constants.js'
 import { VALIDATION } from '@/config/enums.js'
 import { LoggerProvider } from '@/providers/logger.js'
 
@@ -59,7 +59,7 @@ export function isValidMessage(message: Message): boolean {
   // }
 
   // TODO: Remove validation
-  if (!message.from.includes(ERIVELTON_NUMBER)) {
+  if (!message.from.includes(PHONE_NUMBER)) {
     logger.warn('Message validation failed: message is not from Erivelton', {
       from: message.from,
     })
