@@ -4,10 +4,15 @@ import { injectable } from 'tsyringe'
 import { FLOWS } from '@/config/enums.js'
 import { orderMenu } from '@/templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
-import { type ContextData, MESSAGES } from './@pizza.js'
 
 import type { CartItem } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
+import type { ContextData } from './@pizza.js'
+
+const MESSAGES = {
+  CANCELED: '❌ PEDIDO CANCELADO',
+  SUCCESS: '✅ Pizza adicionada ao carrinho com sucesso.',
+} as const
 
 @injectable()
 export class PizzaFinishFlow extends BaseFlow {

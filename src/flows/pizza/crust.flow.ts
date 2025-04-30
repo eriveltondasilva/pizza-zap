@@ -32,7 +32,6 @@ export class PizzaCrustFlow extends BaseFlow {
         .build()
     }
 
-
     this.state.updateContext(phone, {
       data: { selectedCrust },
       flow: FLOWS.PIZZA_NOTES,
