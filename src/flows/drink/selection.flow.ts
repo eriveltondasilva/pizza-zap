@@ -22,16 +22,15 @@ export class DrinkSelectionFlow extends BaseFlow {
   public async handle({ phone, message }: FlowParams) {
     const drinks = await this.drinkRepository.getAll()
     const selectedIndex = parseIndex(message)
+    const selectedDrink = drinks[selectedIndex]
 
-    if (!drinks[selectedIndex]) {
+    if (!selectedDrink) {
       return this.listResponseBuilder
         .addBold('❌ OPÇÃO INVÁLIDA!')
         .addText('Por favor, escolha uma das opções disponíveis abaixo.')
         .addList(buildDrinkList(drinks))
         .build()
     }
-
-    const selectedDrink = drinks[selectedIndex]
 
     this.state.updateContext(phone, {
       data: { selectedDrink },

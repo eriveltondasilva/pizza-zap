@@ -22,8 +22,9 @@ export class PizzaCrustFlow extends BaseFlow {
   public async handle({ phone, message }: FlowParams) {
     const crusts = await this.crustRepository.getAll()
     const selectedIndex = parseIndex(message)
+    const selectedCrust = crusts[selectedIndex]
 
-    if (!crusts[selectedIndex]) {
+    if (!selectedCrust) {
       return this.listResponseBuilder
         .addBold('❌ BORDA INVÁLIDA')
         .addText('Por favor, escolha uma das opções disponíveis abaixo.')
@@ -31,11 +32,10 @@ export class PizzaCrustFlow extends BaseFlow {
         .build()
     }
 
-    const selectedCrust = crusts[selectedIndex]
 
     this.state.updateContext(phone, {
       data: { selectedCrust },
-      flow: FLOWS.PIZZA_NOTE,
+      flow: FLOWS.PIZZA_NOTES,
     })
 
     return this.responseBuilder
