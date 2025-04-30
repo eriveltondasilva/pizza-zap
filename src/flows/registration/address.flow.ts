@@ -1,23 +1,14 @@
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
 import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { CustomerRepository } from '@/repositories/customer.js'
-import { mainMenu } from '@/templates/menus.js'
 import { isValidAddress } from '@/utils/validations.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
+import type { ContextData } from './@registration.js'
 
 @injectable()
 export class RegistrationAddressFlow extends BaseFlow {
-  constructor(
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
-    @inject(CustomerRepository) private readonly customerRepository: CustomerRepository,
-  ) {
-    super()
-  }
-
   public async handle({ context, message: address, phone }: FlowParams) {
     if (!isValidAddress(address)) {
       return this.responseBuilder
@@ -28,29 +19,21 @@ export class RegistrationAddressFlow extends BaseFlow {
         .build()
     }
 
-    const { name } = context.data as {
-      name: string
-      address: string
-    }
+    this.state.updateContext(phone, {
+      data: { address },
+      flow: FLOWS.REGISTRATION_FINISH,
+    })
 
-    if (!name) {
-      this.state.resetState(phone)
-      return this.responseBuilder
-        .addText('❌ Ops! Algo deu errado. Por favor, tente novamente.')
-        .build()
-    }
-
-    const newCustomer = this.customerRepository.create({ name, address, phone })
-    this.logger.ok('New customer registered', { newCustomer })
-
-    this.state.resetState(phone)
-    this.state.updateFlow(phone, FLOWS.MENU)
+    const { name } = context.data as ContextData
 
     return this.responseBuilder
-      .addText('🎉 Cadastro concluído com sucesso,', name.split(' ')[0])
-      .addText('Agora, vamos ao que interessa: _*escolher algo gostoso*_! 😋')
+      .addBold('✅ CONFIRMAÇÃO DE CADASTRO')
+      .addText('Nome do cliente:', name)
+      .addText('Endereço:', address)
       .addEmptyLine()
-      .addMenu(mainMenu)
+      .addText('Deseja confirmar seu pedido?')
+      .addText('1️⃣ - Confirmar ✅')
+      .addText('2️⃣ - Cancelar ❌')
       .build()
   }
 }

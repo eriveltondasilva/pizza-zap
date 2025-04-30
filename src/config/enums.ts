@@ -78,6 +78,7 @@ export enum FLOWS {
   REGISTRATION_START = 'registration_start',
   REGISTRATION_NAME = 'registration_name',
   REGISTRATION_ADDRESS = 'registration_address',
+  REGISTRATION_FINISH = 'registration_finish',
 
   //* Fluxos de navegação principal
   WELCOME = 'welcome',
