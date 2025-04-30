@@ -5,7 +5,7 @@ import { formatCurrency } from '@/utils/format-currency.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
-import { type ContextData, STEP_INDICATORS } from './types.js'
+import { type ContextData, STEP_INDICATORS } from './@checkout.js'
 
 @injectable()
 export class CheckoutObservationsFlow extends BaseFlow {

@@ -5,7 +5,7 @@ import { paymentMenu } from '@/templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '@/types/flows.js'
-import { STEP_INDICATORS } from './types.js'
+import { STEP_INDICATORS } from './@checkout.js'
 
 const PAYMENT_MAP: Record<number, PAYMENT_METHODS> = {
   1: PAYMENT_METHODS.CREDIT,
