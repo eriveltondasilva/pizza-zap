@@ -25,6 +25,7 @@ export class WelcomeFlow extends BaseFlow {
       return this.registrationStartFlow.handle({ context, phone, message })
     }
 
+    this.state.updateCustomer(phone, customer)
     this.state.updateFlow(phone, FLOWS.MENU)
 
     return this.responseBuilder
