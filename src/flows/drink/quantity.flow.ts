@@ -21,7 +21,7 @@ export class DrinkQuantityFlow extends BaseFlow {
     }
 
     const data = context.data as ContextData
-    const order = this.calculateOrder({...data, quantity})
+    const order = this.calculateOrder({ ...data, quantity })
 
     const formattedQuantity = quantity.toString()
     const formattedUnitPrice = formatCurrency(order.unitPrice)
