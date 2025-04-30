@@ -9,7 +9,7 @@ export class TextResponseBuilder extends BaseResponseBuilder {
     return this.setText(text ? delimiter + text + delimiter : delimiter)
   }
 
-  public addLine(char = '-', length = 20): this {
+  public addLine(char = '-', length = 30): this {
     return this.setText(char.repeat(length))
   }
 
