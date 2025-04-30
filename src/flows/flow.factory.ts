@@ -8,6 +8,7 @@ import { WelcomeFlow } from './welcome/welcome.flow.js'
 
 import {
   RegistrationAddressFlow,
+  RegistrationFinishFlow,
   RegistrationNameFlow,
   RegistrationStartFlow,
 } from './registration/index.js'
@@ -52,6 +53,7 @@ export class FlowFactory {
       [FLOWS.REGISTRATION_START, RegistrationStartFlow],
       [FLOWS.REGISTRATION_NAME, RegistrationNameFlow],
       [FLOWS.REGISTRATION_ADDRESS, RegistrationAddressFlow],
+      [FLOWS.REGISTRATION_FINISH, RegistrationFinishFlow],
       //* Core flows
       [FLOWS.WELCOME, WelcomeFlow],
       [FLOWS.MENU, MenuFlow],
