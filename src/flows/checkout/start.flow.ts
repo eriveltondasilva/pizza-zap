@@ -55,8 +55,6 @@ export class CheckoutStartFlow extends BaseFlow {
   }
 
   private createCartSummary(cart: CartItem[]): string[] {
-    return cart.map((item) => {
-      return `${item.quantity}x ${item.name} - ${formatCurrency(item.subtotal)}`
-    })
+    return cart.map((item) => `${item.quantity}x ${item.name} = ${formatCurrency(item.subtotal)}\n`)
   }
 }

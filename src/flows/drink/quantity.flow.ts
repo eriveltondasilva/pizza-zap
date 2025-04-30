@@ -21,7 +21,7 @@ export class DrinkQuantityFlow extends BaseFlow {
     }
 
     const data = context.data as ContextData
-    const order = this.calculateOrder(data)
+    const order = this.calculateOrder({...data, quantity})
 
     const formattedQuantity = quantity.toString()
     const formattedUnitPrice = formatCurrency(order.unitPrice)
@@ -56,7 +56,9 @@ export class DrinkQuantityFlow extends BaseFlow {
 
   //#
   private calculateOrder({ selectedDrink, quantity }: ContextData) {
-    const unitPrice = Number(selectedDrink.price || 0)
+    if (!selectedDrink.price || !quantity) throw new Error('Invalid drink or quantity')
+
+    const unitPrice = Number(selectedDrink.price) || 0
     const subtotal = unitPrice * quantity
     return { unitPrice, subtotal }
   }
