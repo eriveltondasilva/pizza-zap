@@ -16,7 +16,7 @@ import {
   PizzaCrustFlow,
   PizzaFinishFlow,
   PizzaFlavorFlow,
-  PizzaNoteFlow,
+  PizzaNotesFlow,
   PizzaQuantityFlow,
   PizzaStartFlow,
 } from './pizza/index.js'
@@ -61,7 +61,7 @@ export class FlowFactory {
       [FLOWS.PIZZA_FLAVOR, PizzaFlavorFlow],
       [FLOWS.PIZZA_QUANTITY, PizzaQuantityFlow],
       [FLOWS.PIZZA_CRUST, PizzaCrustFlow],
-      [FLOWS.PIZZA_NOTE, PizzaNoteFlow],
+      [FLOWS.PIZZA_NOTES, PizzaNotesFlow],
       [FLOWS.PIZZA_FINISH, PizzaFinishFlow],
       //* Drink flows
       [FLOWS.DRINK_START, DrinkStartFlow],

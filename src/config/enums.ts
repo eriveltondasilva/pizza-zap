@@ -89,7 +89,7 @@ export enum FLOWS {
   PIZZA_FLAVOR = 'pizza_flavor',
   PIZZA_QUANTITY = 'pizza_quantity',
   PIZZA_CRUST = 'pizza_crust',
-  PIZZA_NOTE = 'pizza_note',
+  PIZZA_NOTES = 'pizza_notes',
   PIZZA_FINISH = 'pizza_finish',
 
   //* Fluxos relacionados a pedidos de bebidas

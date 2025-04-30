@@ -7,7 +7,7 @@ export type ContextData = {
   quantity: number
   unitPrice: number
   subtotal: number
-  note?: string
+  notes?: string
 }
 
 export const STEP_INDICATORS = {

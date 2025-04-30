@@ -38,7 +38,7 @@ export type CartItem = {
     //* Pizza
     flavors?: Flavor[]
     crust?: Crust
-    note?: string
+    notes?: string
     //* Drink
     drink?: Drink
   }

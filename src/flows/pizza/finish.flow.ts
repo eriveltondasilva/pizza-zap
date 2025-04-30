@@ -35,7 +35,7 @@ export class PizzaFinishFlow extends BaseFlow {
 
   //# region Private Methods
   private createCartItem(name: string, item: ContextData): CartItem {
-    const { selectedFlavors, selectedCrust, quantity, note, unitPrice, subtotal } = item
+    const { selectedFlavors, selectedCrust, quantity, notes, unitPrice, subtotal } = item
     return {
       type: ITEM_TYPES.PIZZA,
       name,
@@ -45,7 +45,7 @@ export class PizzaFinishFlow extends BaseFlow {
       details: {
         crust: selectedCrust,
         flavors: selectedFlavors,
-        note,
+        notes,
       },
     }
   }

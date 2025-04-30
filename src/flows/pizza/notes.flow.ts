@@ -9,7 +9,7 @@ import type { Flavor } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
 
 @injectable()
-export class PizzaNoteFlow extends BaseFlow {
+export class PizzaNotesFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const data = context.data as ContextData
 
@@ -22,7 +22,7 @@ export class PizzaNoteFlow extends BaseFlow {
         .build()
     }
 
-    const note = message === '0' ? undefined : message
+    const notes = message === '0' ? undefined : message
     const order = this.calculateOrder(data)
 
     const formattedCrustPrice = order.pizzaPrice === 0 ? 'grátis' : formatCurrency(order.pizzaPrice)
@@ -35,7 +35,7 @@ export class PizzaNoteFlow extends BaseFlow {
       data: {
         unitPrice: order.unitPrice,
         subtotal: order.subtotal,
-        note,
+        notes,
       },
       flow: FLOWS.PIZZA_FINISH,
     })
@@ -52,7 +52,7 @@ export class PizzaNoteFlow extends BaseFlow {
       .addText('Preço Unit.:', formattedUnitPrice)
       .addText('Total:', formattedSubtotalPrice)
       .addEmptyLine()
-      .addText('Observação:', note || 'nenhuma')
+      .addText('Observação:', notes || 'nenhuma')
       .addLine()
       .addMono()
       .addText('Deseja confirmar seu pedido?')
@@ -72,7 +72,7 @@ export class PizzaNoteFlow extends BaseFlow {
 
   private calculateAverageFlavorsPrice(flavors: Flavor[]) {
     if (flavors.length === 0) return 0
-    const totalPrice = flavors.reduce((acc, flavor) => acc + Number(flavor.price || 0), 0)
+    const totalPrice = flavors.reduce((total, flavor) => total + Number(flavor.price || 0), 0)
 
     return totalPrice / flavors.length
   }
