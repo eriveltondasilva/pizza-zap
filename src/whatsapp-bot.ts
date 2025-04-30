@@ -49,7 +49,7 @@ export class WhatsappBot implements IWhatsappBot {
 
   //#
   private async processMessage(message: Message): Promise<void> {
-    if (!message.body || !this.messageValidation.validate(message)) {
+    if (!this.messageValidation.validate(message)) {
       this.logger.warn(this.messageValidation.getErrorMessage(), {
         from: message.from,
       })
@@ -60,7 +60,7 @@ export class WhatsappBot implements IWhatsappBot {
     const client = await this.client.getClient()
 
     try {
-      const { type, content } = await this.conversation.handle(message.from, message.body)
+      const { type, content } = await this.conversation.handle(message.from, message.body as string)
 
       const senderMap: Record<MESSAGE_TYPES, ISender> = {
         [MESSAGE_TYPES.TEXT]: this.textMessageSender,
