@@ -60,12 +60,7 @@ export class CheckoutAddressFlow extends BaseFlow {
         .build()
     }
 
-    return this.responseBuilder
-      .addBold('❌ OPÇÃO INVÁLIDA')
-      .addText('Por favor, escolha uma das opções disponíveis:')
-      .addText('1️⃣ - Sim, manter este endereço')
-      .addText('2️⃣ - Não, quero informar um novo endereço')
-      .build()
+    return this.buildInvalidOptionResponse()
   }
 
   private buildObservationsResponse() {
@@ -76,6 +71,15 @@ export class CheckoutAddressFlow extends BaseFlow {
       .addQuote('Exemplo: Campainha não funciona, ligar ao chegar, etc.')
       .addEmptyLine()
       .addText('0️⃣ - Não desejo adicionar observações')
+      .build()
+  }
+
+  private buildInvalidOptionResponse() {
+    return this.responseBuilder
+      .addBold('❌ OPÇÃO INVÁLIDA')
+      .addText('Por favor, escolha uma das opções disponíveis:')
+      .addText('1️⃣ - Sim, manter este endereço')
+      .addText('2️⃣ - Não, quero informar um novo endereço')
       .build()
   }
 }

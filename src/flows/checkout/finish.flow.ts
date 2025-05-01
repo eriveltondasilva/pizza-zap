@@ -19,17 +19,23 @@ const MESSAGE_CANCELED = {
   SUBTITLE: 'Você pode continuar comprando ou fechar o pedido.',
 }
 
+const OPTIONS = {
+  CANCEL: 'Cancelar pedido',
+  CONFIRM: 2
+}
+
 @injectable()
 export class CheckoutFinishFlow extends BaseFlow {
-  public async handle({ phone, message, context }: FlowParams) {
+  public async handle({ phone, message }: FlowParams) {
     const isCanceled = message === '0'
-    const nextFlow = isCanceled ? FLOWS.ORDER : FLOWS.MENU
-    const messageData = isCanceled ? MESSAGE_CANCELED : MESSAGE_SUCCEED
-    const menu = isCanceled ? orderMenu : mainMenu
 
     if (!isCanceled) {
       // TODO: register order
     }
+
+    const nextFlow = isCanceled ? FLOWS.ORDER : FLOWS.MENU
+    const messageData = isCanceled ? MESSAGE_CANCELED : MESSAGE_SUCCEED
+    const menu = isCanceled ? orderMenu : mainMenu
 
     this.state.clearData(phone)
     this.state.clearCart(phone)

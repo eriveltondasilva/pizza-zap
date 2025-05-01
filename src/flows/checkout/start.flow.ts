@@ -15,16 +15,7 @@ export class CheckoutStartFlow extends BaseFlow {
     const cart = this.state.getCart(phone)
 
     if (cart.length === 0) {
-      this.state.updateFlow(phone, FLOWS.ORDER)
-      return this.responseBuilder
-        .addBold('❌ CARRINHO VAZIO')
-        .addText(
-          'Seu carrinho está vazio.',
-          'Por favor, adicione itens ao carrinho antes de finalizar o pedido.',
-        )
-        .addEmptyLine()
-        .addMenu(orderMenu)
-        .build()
+      return this.handleEmptyCart(phone)
     }
 
     const cartSummary = this.createCartSummary(cart)
@@ -50,11 +41,25 @@ export class CheckoutStartFlow extends BaseFlow {
       .build()
   }
 
+  //#
   private calculateTotal(cart: CartItem[]): number {
     return cart.reduce((total, item) => total + item.subtotal, 0)
   }
 
   private createCartSummary(cart: CartItem[]): string[] {
     return cart.map((item) => `${item.quantity}x ${item.name} = ${formatCurrency(item.subtotal)}\n`)
+  }
+
+  private handleEmptyCart(phone: string) {
+    this.state.updateFlow(phone, FLOWS.ORDER)
+    return this.responseBuilder
+      .addBold('❌ CARRINHO VAZIO')
+      .addText(
+        'Seu carrinho está vazio.',
+        'Por favor, adicione itens ao carrinho antes de finalizar o pedido.',
+      )
+      .addEmptyLine()
+      .addMenu(orderMenu)
+      .build()
   }
 }

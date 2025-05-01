@@ -3,9 +3,9 @@ import { injectable } from 'tsyringe'
 import { FLOWS, PAYMENT_METHODS } from '@/config/enums.js'
 import { paymentMenu } from '@/templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
+import { STEP_INDICATORS } from './@checkout.js'
 
 import type { FlowParams } from '@/types/flows.js'
-import { STEP_INDICATORS } from './@checkout.js'
 
 const PAYMENT_MAP: Record<number, PAYMENT_METHODS> = {
   1: PAYMENT_METHODS.CREDIT,
@@ -21,30 +21,42 @@ export class CheckoutPaymentFlow extends BaseFlow {
     const selectedPayment = PAYMENT_MAP[selectedIndex]
 
     if (!selectedPayment) {
-      return this.responseBuilder
-        .addBold('❌ MÉTODO DE PAGAMENTO INVÁLIDO')
-        .addText('Por favor, escolha uma das opções abaixo:')
-        .addEmptyLine()
-        .addMenu(paymentMenu)
-        .build()
+      return this.buildInvalidPaymentResponse()
     }
+
+    this.state.updateData(phone, { selectedPayment })
 
     if (selectedPayment === PAYMENT_METHODS.CASH) {
-      this.state.updateContext(phone, {
-        data: { selectedPayment },
-        flow: FLOWS.CHECKOUT_CHANGE,
-      })
-
-      return this.responseBuilder
-        .addText('💵 Para quanto deseja troco?')
-        .addQuote(`Digite o valor para troco ou "0" se não precisar de troco.`)
-        .build()
+      return this.proceedToChangeStep(phone)
     }
 
+    return this.proceedToAddressStep(phone)
+  }
+
+  //#
+  private buildInvalidPaymentResponse() {
+    return this.responseBuilder
+      .addBold('❌ MÉTODO DE PAGAMENTO INVÁLIDO')
+      .addText('Por favor, escolha uma das opções abaixo:')
+      .addEmptyLine()
+      .addMenu(paymentMenu)
+      .build()
+  }
+
+  private proceedToChangeStep(phone: string) {
+    this.state.updateFlow(phone, FLOWS.CHECKOUT_CHANGE)
+
+    return this.responseBuilder
+      .addText('💵 Para quanto deseja troco?')
+      .addQuote('Digite o valor para troco ou "0" se não precisar de troco.')
+      .build()
+  }
+
+  private proceedToAddressStep(phone: string) {
     const customer = this.state.getCustomer(phone)
 
     this.state.updateContext(phone, {
-      data: { selectedPayment, deliveryAddress: customer.address },
+      data: { deliveryAddress: customer.address },
       flow: FLOWS.CHECKOUT_ADDRESS,
     })
 
@@ -53,7 +65,7 @@ export class CheckoutPaymentFlow extends BaseFlow {
       .addEmptyLine()
       .addBold('📍 ENDEREÇO DE ENTREGA')
       .addText('Encontramos o endereço abaixo em seu cadastro:')
-      .addQuote(customer.address)
+      .addItalic(customer.address)
       .addEmptyLine()
       .addText('Deseja utilizar este endereço?')
       .addText('1️⃣ - Sim, manter este endereço')

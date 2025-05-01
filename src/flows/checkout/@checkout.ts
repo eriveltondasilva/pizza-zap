@@ -1,4 +1,4 @@
-import type { PAYMENT_METHODS } from '@/config/enums.js'
+import type { PAYMENT_METHODS } from '@/config/enums.js'  
 
 export type ContextData = {
   selectedPayment: PAYMENT_METHODS
