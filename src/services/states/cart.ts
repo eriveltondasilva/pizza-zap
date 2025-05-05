@@ -99,6 +99,4 @@ export class CartService {
   //       return total + itemTotal + extrasTotal
   //     }, 0)
   //   }
-
-  
 }

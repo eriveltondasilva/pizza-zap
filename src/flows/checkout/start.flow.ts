@@ -3,18 +3,19 @@ import { injectable } from 'tsyringe'
 import { FLOWS } from '@/config/enums.js'
 import { orderMenu, paymentMenu } from '@/templates/menus.js'
 import { formatCurrency } from '@/utils/format-currency.js'
+import { isEmpty } from '@/utils/is-empty.js'
 import { BaseFlow } from '../base.flow.js'
+import { STEP_INDICATORS } from './@checkout.js'
 
 import type { CartItem } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
-import { STEP_INDICATORS } from './@checkout.js'
 
 @injectable()
 export class CheckoutStartFlow extends BaseFlow {
   public async handle({ phone }: FlowParams) {
     const cart = this.state.getCart(phone)
 
-    if (cart.length === 0) {
+    if (isEmpty(cart)) {
       return this.handleEmptyCart(phone)
     }
 
@@ -33,7 +34,6 @@ export class CheckoutStartFlow extends BaseFlow {
       .addText('# RESUMO DO PEDIDO')
       .addLine()
       .addBulletList(cartSummary)
-      .addEmptyLine()
       .addText('Total:', formattedTotal)
       .addLine()
       .addMono()

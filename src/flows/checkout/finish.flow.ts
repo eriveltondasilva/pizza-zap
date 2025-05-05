@@ -20,22 +20,33 @@ const MESSAGE_CANCELED = {
 }
 
 const OPTIONS = {
-  CANCEL: 'Cancelar pedido',
-  CONFIRM: 2
+  CONFIRM: 1,
+  CANCEL: 2,
 }
 
 @injectable()
 export class CheckoutFinishFlow extends BaseFlow {
   public async handle({ phone, message }: FlowParams) {
-    const isCanceled = message === '0'
+    const selectedOption = Number.parseInt(message, 10)
+    const isConfirmed = selectedOption === OPTIONS.CONFIRM
 
-    if (!isCanceled) {
+    if (!Object.values(OPTIONS).includes(selectedOption)) {
+      return this.responseBuilder
+        .addText('❌ OPÇÃO INVÁLIDA')
+        .addEmptyLine()
+        .addText('Deseja confirmar seu pedido?')
+        .addText('1️⃣ - Sim, confirmar meu pedido ✅')
+        .addText('2️⃣ - Não, cancelar o pedido ❌')
+        .build()
+    }
+
+    if (isConfirmed) {
       // TODO: register order
     }
 
-    const nextFlow = isCanceled ? FLOWS.ORDER : FLOWS.MENU
-    const messageData = isCanceled ? MESSAGE_CANCELED : MESSAGE_SUCCEED
-    const menu = isCanceled ? orderMenu : mainMenu
+    const nextFlow = isConfirmed ? FLOWS.MENU : FLOWS.ORDER
+    const messageData = isConfirmed ? MESSAGE_SUCCEED : MESSAGE_CANCELED
+    const menu = isConfirmed ? mainMenu : orderMenu
 
     this.state.clearData(phone)
     this.state.clearCart(phone)

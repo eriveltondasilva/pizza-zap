@@ -24,13 +24,11 @@ export class CheckoutPaymentFlow extends BaseFlow {
       return this.buildInvalidPaymentResponse()
     }
 
-    this.state.updateData(phone, { selectedPayment })
-
     if (selectedPayment === PAYMENT_METHODS.CASH) {
       return this.proceedToChangeStep(phone)
     }
 
-    return this.proceedToAddressStep(phone)
+    return this.proceedToAddressStep(phone, selectedPayment)
   }
 
   //#
@@ -44,7 +42,10 @@ export class CheckoutPaymentFlow extends BaseFlow {
   }
 
   private proceedToChangeStep(phone: string) {
-    this.state.updateFlow(phone, FLOWS.CHECKOUT_CHANGE)
+    this.state.updateContext(phone, {
+      data: { selectedPayment: PAYMENT_METHODS.CASH },
+      flow: FLOWS.CHECKOUT_CHANGE,
+    })
 
     return this.responseBuilder
       .addText('💵 Para quanto deseja troco?')
@@ -52,11 +53,11 @@ export class CheckoutPaymentFlow extends BaseFlow {
       .build()
   }
 
-  private proceedToAddressStep(phone: string) {
+  private proceedToAddressStep(phone: string, selectedPayment: PAYMENT_METHODS) {
     const customer = this.state.getCustomer(phone)
 
     this.state.updateContext(phone, {
-      data: { deliveryAddress: customer.address },
+      data: { deliveryAddress: customer.address, selectedPayment },
       flow: FLOWS.CHECKOUT_ADDRESS,
     })
 
