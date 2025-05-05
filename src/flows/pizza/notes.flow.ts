@@ -44,7 +44,7 @@ export class PizzaNotesFlow extends BaseFlow {
 
   //#
   private isValidOrder(data: ContextData): boolean {
-    return Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust && data.quantity)
+    return Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity)
   }
 
   private calculateAverageFlavorsPrice(flavors: Flavor[]) {

@@ -38,9 +38,9 @@ export class PizzaQuantityFlow extends BaseFlow {
     })
 
     const crusts = await this.crustRepository.getAll()
-    
+
     if (isEmpty(crusts)) {
-      this.logger.error('No flavors found', { phone })
+      this.logger.error('No crusts found', { phone })
       this.state.resetState(phone)
       return this.responseBuilder
         .addBold('❌ ERRO NO PEDIDO')

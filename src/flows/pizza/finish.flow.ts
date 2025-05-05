@@ -35,8 +35,8 @@ export class PizzaFinishFlow extends BaseFlow {
     }
 
     if (selectedOption === OPTIONS.CONFIRM) {
-      const contextData = context.data as ContextData
-      const cartItem = this.createCartItem(contextData)
+      const data = context.data as ContextData
+      const cartItem = this.createCartItem(data)
       this.state.addToCart(phone, cartItem)
     }
 
