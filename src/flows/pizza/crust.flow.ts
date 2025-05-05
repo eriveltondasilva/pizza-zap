@@ -38,7 +38,7 @@ export class PizzaCrustFlow extends BaseFlow {
     })
 
     return this.responseBuilder
-      .addCode(STEP_INDICATORS.NOTE)
+      .addCode(STEP_INDICATORS.NOTES)
       .addEmptyLine()
       .addText('Deseja adicionar alguma observação ao seu pedido?')
       .addQuote('Exemplo: retirar cebola, mais queijo, etc.')

@@ -2,7 +2,9 @@ import { inject, injectable } from 'tsyringe'
 
 import { ListResponseBuilder } from '@/builders/responses/list.js'
 import { FLOWS } from '@/config/enums.js'
+import { LoggerProvider } from '@/providers/logger.js'
 import { CrustRepository } from '@/repositories/crust.js'
+import { isEmpty } from '@/utils/is-empty.js'
 import { buildCrustList } from '@/utils/list-builder.js'
 import { isValidQuantity } from '@/utils/validations.js'
 import { BaseFlow } from '../base.flow.js'
@@ -15,6 +17,7 @@ export class PizzaQuantityFlow extends BaseFlow {
   constructor(
     @inject(CrustRepository) private readonly crustRepository: CrustRepository,
     @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
+    @inject(LoggerProvider) private readonly logger: LoggerProvider,
   ) {
     super()
   }
@@ -35,6 +38,16 @@ export class PizzaQuantityFlow extends BaseFlow {
     })
 
     const crusts = await this.crustRepository.getAll()
+    
+    if (isEmpty(crusts)) {
+      this.logger.error('No flavors found', { phone })
+      this.state.resetState(phone)
+      return this.responseBuilder
+        .addBold('❌ ERRO NO PEDIDO')
+        .addText('Desculpe, não encontramos bordas disponíveis no momento.')
+        .addText('Por favor, tente novamente mais tarde.')
+        .build()
+    }
 
     return this.listResponseBuilder
       .addCode(STEP_INDICATORS.CRUST)

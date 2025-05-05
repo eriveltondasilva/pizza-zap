@@ -24,7 +24,6 @@ export class PizzaFlavorFlow extends BaseFlow {
     const flavors = await this.flavorRepository.getAll()
     const selectedIndex = parseIndex(message)
     const selectedFlavor = flavors[selectedIndex]
-    const data = context.data as ContextData
 
     if (!selectedFlavor) {
       return this.listResponseBuilder
@@ -34,6 +33,7 @@ export class PizzaFlavorFlow extends BaseFlow {
         .build()
     }
 
+    const data = context.data as ContextData
     const selectedFlavors = [...(data.selectedFlavors || []), selectedFlavor]
 
     if (!data.isSingleFlavor && selectedFlavors.length === 1) {

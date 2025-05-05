@@ -8,12 +8,17 @@ import { type ContextData, STEP_INDICATORS } from './@pizza.js'
 import type { Flavor } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
 
+type OrderData = ContextData & {
+  crustPrice: number
+  pizzaPrice: number
+}
+
 @injectable()
 export class PizzaNotesFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const data = context.data as ContextData
 
-    if (!this.validateOrderData(data)) {
+    if (!this.isValidOrder(data)) {
       this.state.resetState(phone)
       return this.responseBuilder
         .addBold('❌ ERRO NO PEDIDO')
@@ -23,57 +28,28 @@ export class PizzaNotesFlow extends BaseFlow {
     }
 
     const notes = message === '0' ? undefined : message
-    const order = this.calculateOrder(data)
-
-    const formattedCrustPrice = order.pizzaPrice === 0 ? 'grátis' : formatCurrency(order.pizzaPrice)
-    const formattedPizzaPrice = formatCurrency(order.pizzaPrice)
-    const formattedUnitPrice = formatCurrency(order.unitPrice)
-    const formattedSubtotalPrice = formatCurrency(order.subtotal)
-    const formattedQuantity = data.quantity.toString()
+    const orderCalculation = this.calculateOrder(data)
 
     this.state.updateContext(phone, {
       data: {
-        unitPrice: order.unitPrice,
-        subtotal: order.subtotal,
+        unitPrice: orderCalculation.unitPrice,
+        subtotal: orderCalculation.subtotal,
         notes,
       },
       flow: FLOWS.PIZZA_FINISH,
     })
 
-    return this.responseBuilder
-      .addCode(STEP_INDICATORS.FINISH)
-      .addMono()
-      .addText('# RESUMO DO PEDIDO')
-      .addLine()
-      .addText('Sabor:', this.getFlavorNames(data.selectedFlavors), `(${formattedPizzaPrice})`)
-      .addText('Borda:', data.selectedCrust.name, `(${formattedCrustPrice})`)
-      .addEmptyLine()
-      .addText('Quantidade:', formattedQuantity)
-      .addText('Preço Unit.:', formattedUnitPrice)
-      .addText('Total:', formattedSubtotalPrice)
-      .addEmptyLine()
-      .addText('Observação:', notes || 'nenhuma')
-      .addLine()
-      .addMono()
-      .addText('Deseja confirmar seu pedido?')
-      .addText('1️⃣ - Confirmar ✅')
-      .addText('0️⃣ - Cancelar ❌')
-      .build()
+    return this.buildOrderSummary({ ...data, ...orderCalculation, notes })
   }
 
   //#
-  private getFlavorNames(flavors: Flavor[]) {
-    return flavors.map((flavor) => flavor.name).join(' + ')
-  }
-
-  private validateOrderData({ selectedFlavors, selectedCrust, quantity }: ContextData): boolean {
-    return Boolean(selectedFlavors?.length > 0 && selectedCrust && quantity && quantity > 0)
+  private isValidOrder(data: ContextData): boolean {
+    return Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust && data.quantity)
   }
 
   private calculateAverageFlavorsPrice(flavors: Flavor[]) {
     if (flavors.length === 0) return 0
     const totalPrice = flavors.reduce((total, flavor) => total + Number(flavor.price || 0), 0)
-
     return totalPrice / flavors.length
   }
 
@@ -84,5 +60,33 @@ export class PizzaNotesFlow extends BaseFlow {
     const subtotal = unitPrice * quantity
 
     return { crustPrice, pizzaPrice, unitPrice, subtotal }
+  }
+
+  private buildOrderSummary(order: OrderData) {
+    const flavorName = order.selectedFlavors.map((flavor) => flavor.name).join(' + ')
+    const formattedCrustPrice = order.crustPrice === 0 ? 'grátis' : formatCurrency(order.crustPrice)
+    const formattedPizzaPrice = formatCurrency(order.pizzaPrice)
+    const formattedUnitPrice = formatCurrency(order.unitPrice)
+    const formattedSubtotal = formatCurrency(order.subtotal)
+
+    return this.responseBuilder
+      .addCode(STEP_INDICATORS.FINISH)
+      .addMono()
+      .addText('# RESUMO DO PEDIDO')
+      .addLine()
+      .addText('Sabor:', flavorName, `(${formattedPizzaPrice})`)
+      .addText('Borda:', order.selectedCrust.name, `(${formattedCrustPrice})`)
+      .addEmptyLine()
+      .addText('Quantidade:', order.quantity.toString())
+      .addText('Preço Unit.:', formattedUnitPrice)
+      .addText('Total:', formattedSubtotal)
+      .addEmptyLine()
+      .addText('Observação:', order.notes || 'nenhuma')
+      .addLine()
+      .addMono()
+      .addText('Deseja confirmar seu pedido?')
+      .addText('1️⃣ - Sim, confirmar meu pedido ✅')
+      .addText('2️⃣ - Não, cancelar o pedido ❌')
+      .build()
   }
 }

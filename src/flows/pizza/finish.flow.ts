@@ -12,19 +12,31 @@ import type { ContextData } from './@pizza.js'
 const MESSAGES = {
   CANCELED: '❌ PEDIDO CANCELADO',
   SUCCESS: '✅ Pizza adicionada ao carrinho com sucesso.',
-} as const
+}
+
+const OPTIONS = {
+  CANCEL: 1,
+  CONFIRM: 2,
+}
 
 @injectable()
 export class PizzaFinishFlow extends BaseFlow {
   public async handle({ message, phone, context }: FlowParams) {
-    const isCanceled = message === '0'
+    const selectedOption = Number(message)
 
-    if (!isCanceled) {
+    if (!Object.values(OPTIONS).includes(selectedOption)) {
+      return this.responseBuilder
+        .addText('❌ OPÇÃO INVÁLIDA')
+        .addEmptyLine()
+        .addText('Deseja confirmar seu pedido?')
+        .addText('1️⃣ - Sim, confirmar meu pedido ✅')
+        .addText('2️⃣ - Não, cancelar o pedido ❌')
+        .build()
+    }
+
+    if (selectedOption === OPTIONS.CONFIRM) {
       const contextData = context.data as ContextData
-
-      const itemName = this.createItemName(contextData)
-      const cartItem = this.createCartItem(itemName, contextData)
-
+      const cartItem = this.createCartItem(contextData)
       this.state.addToCart(phone, cartItem)
     }
 
@@ -32,31 +44,34 @@ export class PizzaFinishFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.ORDER)
 
     return this.responseBuilder
-      .addText(isCanceled ? MESSAGES.CANCELED : MESSAGES.SUCCESS)
+      .addText(selectedOption === OPTIONS.CONFIRM ? MESSAGES.SUCCESS : MESSAGES.CANCELED)
       .addEmptyLine()
       .addMenu(orderMenu)
       .build()
   }
 
-  //# region Private Methods
-  private createCartItem(name: string, item: ContextData): CartItem {
-    const { selectedFlavors, selectedCrust, quantity, notes, unitPrice, subtotal } = item
+  //#
+  private createCartItem(item: ContextData): CartItem {
+    const itemName = this.createItemName(item.selectedFlavors, item.selectedCrust)
+
     return {
       type: ITEM_TYPES.PIZZA,
-      name,
-      quantity,
-      unitPrice,
-      subtotal,
+      name: itemName,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      subtotal: item.subtotal,
       details: {
-        crust: selectedCrust,
-        flavors: selectedFlavors,
-        notes,
+        crust: item.selectedCrust,
+        flavors: item.selectedFlavors,
+        notes: item.notes,
       },
     }
   }
 
-  private createItemName({ selectedFlavors, selectedCrust }: ContextData): string {
-    const flavorNames = selectedFlavors.map((flavor) => flavor.name).join(' + ')
-    return `Pizza ${flavorNames} (borda ${selectedCrust.name})`
+  private createItemName(
+    selectedFlavors: ContextData['selectedFlavors'],
+    selectedCrust: ContextData['selectedCrust'],
+  ) {
+    return `Pizza ${selectedFlavors.map((flavor) => flavor.name).join(' + ')} (borda ${selectedCrust.name})`
   }
 }
