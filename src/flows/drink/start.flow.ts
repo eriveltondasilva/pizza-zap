@@ -2,7 +2,9 @@ import { inject, injectable } from 'tsyringe'
 
 import { ListResponseBuilder } from '@/builders/responses/list.js'
 import { FLOWS } from '@/config/enums.js'
+import { LoggerProvider } from '@/providers/logger.js'
 import { DrinkRepository } from '@/repositories/drink.js'
+import { isEmpty } from '@/utils/is-empty.js'
 import { buildDrinkList } from '@/utils/list-builder.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@drink.js'
@@ -14,6 +16,7 @@ export class DrinkStartFlow extends BaseFlow {
   constructor(
     @inject(DrinkRepository) private readonly drinkRepository: DrinkRepository,
     @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
+    @inject(LoggerProvider) private readonly logger: LoggerProvider,
   ) {
     super()
   }
@@ -21,10 +24,13 @@ export class DrinkStartFlow extends BaseFlow {
   public async handle({ phone }: FlowParams) {
     const drinks = await this.drinkRepository.getAll()
 
-    if (!drinks?.length) {
+    if (isEmpty(drinks)) {
+      this.logger.error('No drinks found', { phone })
       this.state.resetState(phone)
       return this.responseBuilder
-        .addText('❌ Desculpe, não encontramos bebidas disponíveis no momento.')
+        .addBold('❌ ERRO NO PEDIDO')
+        .addText('Desculpe, não encontramos bebidas disponíveis no momento.')
+        .addText('Por favor, tente novamente mais tarde.')
         .build()
     }
 

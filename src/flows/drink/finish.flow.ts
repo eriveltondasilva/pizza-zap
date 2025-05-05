@@ -4,20 +4,39 @@ import { injectable } from 'tsyringe'
 import { FLOWS, ITEM_TYPES } from '@/config/enums.js'
 import { orderMenu } from '@/templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
-import { type ContextData, MESSAGES } from './@drink.js'
 
 import type { CartItem } from '@/types/entities.js'
 import type { FlowParams } from '@/types/flows.js'
+import type { ContextData } from './@drink.js'
+
+const MESSAGES = {
+  CANCELED: '❌ PEDIDO CANCELADO',
+  SUCCESS: '✅ Bebida adicionada ao carrinho com sucesso.',
+}
+
+const OPTIONS = {
+  CANCEL: 1,
+  CONFIRM: 2,
+}
 
 @injectable()
 export class DrinkFinishFlow extends BaseFlow {
   public async handle({ message, phone, context }: FlowParams) {
-    const isCanceled = message === '0'
+    const selectedOption = Number(message)
 
-    if (!isCanceled) {
+    if (!Object.values(OPTIONS).includes(selectedOption)) {
+      return this.responseBuilder
+        .addText('❌ OPÇÃO INVÁLIDA')
+        .addEmptyLine()
+        .addText('Deseja confirmar seu pedido?')
+        .addText('1️⃣ - Sim, confirmar meu pedido ✅')
+        .addText('2️⃣ - Não, cancelar o pedido ❌')
+        .build()
+    }
+
+    if (selectedOption === OPTIONS.CONFIRM) {
       const data = context.data as ContextData
       const cartItem = this.createCartItem(data)
-
       this.state.addToCart(phone, cartItem)
     }
 
@@ -25,7 +44,7 @@ export class DrinkFinishFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.ORDER)
 
     return this.responseBuilder
-      .addText(isCanceled ? MESSAGES.CANCELED : MESSAGES.SUCCESS)
+      .addText(selectedOption === OPTIONS.CONFIRM ? MESSAGES.SUCCESS : MESSAGES.CANCELED)
       .addEmptyLine()
       .addMenu(orderMenu)
       .build()
@@ -33,15 +52,14 @@ export class DrinkFinishFlow extends BaseFlow {
 
   //#
   private createCartItem(item: ContextData): CartItem {
-    const { selectedDrink, quantity, unitPrice, subtotal } = item
     return {
       type: ITEM_TYPES.DRINK,
-      name: selectedDrink.name,
-      quantity,
-      unitPrice,
-      subtotal,
+      name: item.selectedDrink.name,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      subtotal: item.subtotal,
       details: {
-        drink: selectedDrink,
+        drink: item.selectedDrink,
       },
     }
   }

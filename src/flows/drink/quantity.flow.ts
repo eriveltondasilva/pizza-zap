@@ -21,20 +21,44 @@ export class DrinkQuantityFlow extends BaseFlow {
     }
 
     const data = context.data as ContextData
-    const order = this.calculateOrder({ ...data, quantity })
 
-    const formattedQuantity = quantity.toString()
-    const formattedUnitPrice = formatCurrency(order.unitPrice)
-    const formattedSubtotalPrice = formatCurrency(order.subtotal)
+    if (!this.isValidOrder(data)) {
+      this.state.resetState(phone)
+      return this.responseBuilder
+        .addBold('❌ ERRO NO PEDIDO')
+        .addText('Não foi possível processar seu pedido devido a dados incompletos.')
+        .addText('Por favor, inicie seu pedido novamente.')
+        .build()
+    }
+
+    const orderCalculation = this.calculateOrder({ ...data, quantity })
 
     this.state.updateContext(phone, {
       data: {
-        unitPrice: order.unitPrice,
-        subtotal: order.subtotal,
+        unitPrice: orderCalculation.unitPrice,
+        subtotal: orderCalculation.subtotal,
         quantity,
       },
       flow: FLOWS.DRINK_FINISH,
     })
+
+    return this.buildOrderSummary({ ...data, ...orderCalculation, quantity })
+  }
+
+  //#
+  private calculateOrder({ selectedDrink, quantity }: ContextData) {
+    const unitPrice = Number(selectedDrink.price) || 0
+    const subtotal = unitPrice * quantity
+    return { unitPrice, subtotal }
+  }
+
+  private isValidOrder(data: ContextData): boolean {
+    return Boolean(data.selectedDrink.name && data.quantity)
+  }
+
+  private buildOrderSummary(data: ContextData) {
+    const formattedUnitPrice = formatCurrency(data.selectedDrink.price)
+    const formattedSubtotal = formatCurrency(data.subtotal)
 
     return this.responseBuilder
       .addCode(STEP_INDICATORS.FINISH)
@@ -43,23 +67,14 @@ export class DrinkQuantityFlow extends BaseFlow {
       .addLine()
       .addText('Bebida:', data.selectedDrink.name)
       .addEmptyLine()
-      .addText('Quantidade:', formattedQuantity)
+      .addText('Quantidade:', data.quantity.toString())
       .addText('Preço Unit.:', formattedUnitPrice)
-      .addText('Total:', formattedSubtotalPrice)
+      .addText('Total:', formattedSubtotal)
       .addLine()
       .addMono()
       .addText('Deseja confirmar seu pedido?')
-      .addText('1️⃣ - Confirmar ✅')
-      .addText('0️⃣ - Cancelar ❌')
+      .addText('1️⃣ - Sim, confirmar meu pedido ✅')
+      .addText('2️⃣ - Não, cancelar o pedido ❌')
       .build()
-  }
-
-  //#
-  private calculateOrder({ selectedDrink, quantity }: ContextData) {
-    if (!selectedDrink.price || !quantity) throw new Error('Invalid drink or quantity')
-
-    const unitPrice = Number(selectedDrink.price) || 0
-    const subtotal = unitPrice * quantity
-    return { unitPrice, subtotal }
   }
 }
