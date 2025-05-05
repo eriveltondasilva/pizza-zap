@@ -21,8 +21,9 @@ export class DrinkQuantityFlow extends BaseFlow {
     }
 
     const data = context.data as ContextData
+    const isValidOrder = Boolean(data.selectedDrink.name && data.quantity)
 
-    if (!this.isValidOrder(data)) {
+    if (!isValidOrder) {
       this.state.resetState(phone)
       return this.responseBuilder
         .addBold('❌ ERRO NO PEDIDO')
@@ -42,24 +43,6 @@ export class DrinkQuantityFlow extends BaseFlow {
       flow: FLOWS.DRINK_FINISH,
     })
 
-    return this.buildOrderSummary({ ...data, ...orderCalculation, quantity })
-  }
-
-  //#
-  private calculateOrder({ selectedDrink, quantity }: ContextData) {
-    const unitPrice = Number(selectedDrink.price) || 0
-    const subtotal = unitPrice * quantity
-    return { unitPrice, subtotal }
-  }
-
-  private isValidOrder(data: ContextData): boolean {
-    return Boolean(data.selectedDrink.name && data.quantity)
-  }
-
-  private buildOrderSummary(data: ContextData) {
-    const formattedUnitPrice = formatCurrency(data.selectedDrink.price)
-    const formattedSubtotal = formatCurrency(data.subtotal)
-
     return this.responseBuilder
       .addCode(STEP_INDICATORS.FINISH)
       .addMono()
@@ -68,13 +51,20 @@ export class DrinkQuantityFlow extends BaseFlow {
       .addText('Bebida:', data.selectedDrink.name)
       .addEmptyLine()
       .addText('Quantidade:', data.quantity.toString())
-      .addText('Preço Unit.:', formattedUnitPrice)
-      .addText('Total:', formattedSubtotal)
+      .addText('Preço Unit.:', formatCurrency(data.selectedDrink.price))
+      .addText('Total:', formatCurrency(data.subtotal))
       .addLine()
       .addMono()
       .addText('Deseja confirmar seu pedido?')
       .addText('1️⃣ - Sim, confirmar meu pedido ✅')
       .addText('2️⃣ - Não, cancelar o pedido ❌')
       .build()
+  }
+
+  //#
+  private calculateOrder({ selectedDrink, quantity }: ContextData) {
+    const unitPrice = Number(selectedDrink.price) || 0
+    const subtotal = unitPrice * quantity
+    return { unitPrice, subtotal }
   }
 }

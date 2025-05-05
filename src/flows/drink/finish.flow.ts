@@ -23,8 +23,10 @@ const OPTIONS = {
 export class DrinkFinishFlow extends BaseFlow {
   public async handle({ message, phone, context }: FlowParams) {
     const selectedOption = Number(message)
+    const isValidOption = Object.values(OPTIONS).includes(selectedOption)
+    const isConfirm = selectedOption === OPTIONS.CONFIRM
 
-    if (!Object.values(OPTIONS).includes(selectedOption)) {
+    if (!isValidOption) {
       return this.responseBuilder
         .addText('❌ OPÇÃO INVÁLIDA')
         .addEmptyLine()
@@ -34,7 +36,7 @@ export class DrinkFinishFlow extends BaseFlow {
         .build()
     }
 
-    if (selectedOption === OPTIONS.CONFIRM) {
+    if (isConfirm) {
       const data = context.data as ContextData
       const cartItem = this.createCartItem(data)
       this.state.addToCart(phone, cartItem)
@@ -44,7 +46,7 @@ export class DrinkFinishFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.ORDER)
 
     return this.responseBuilder
-      .addText(selectedOption === OPTIONS.CONFIRM ? MESSAGES.SUCCESS : MESSAGES.CANCELED)
+      .addText(isConfirm ? MESSAGES.SUCCESS : MESSAGES.CANCELED)
       .addEmptyLine()
       .addMenu(orderMenu)
       .build()
