@@ -17,8 +17,11 @@ type OrderData = ContextData & {
 export class PizzaNotesFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const data = context.data as ContextData
+    const isValidOrder = Boolean(
+      data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity,
+    )
 
-    if (!this.isValidOrder(data)) {
+    if (!isValidOrder) {
       this.state.resetState(phone)
       return this.responseBuilder
         .addBold('❌ ERRO NO PEDIDO')
@@ -42,11 +45,6 @@ export class PizzaNotesFlow extends BaseFlow {
     return this.buildOrderSummary({ ...data, ...orderCalculation, notes })
   }
 
-  //#
-  private isValidOrder(data: ContextData): boolean {
-    return Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity)
-  }
-
   private calculateAverageFlavorsPrice(flavors: Flavor[]) {
     if (flavors.length === 0) return 0
     const totalPrice = flavors.reduce((total, flavor) => total + Number(flavor.price || 0), 0)
@@ -65,21 +63,18 @@ export class PizzaNotesFlow extends BaseFlow {
   private buildOrderSummary(order: OrderData) {
     const flavorName = order.selectedFlavors.map((flavor) => flavor.name).join(' + ')
     const formattedCrustPrice = order.crustPrice === 0 ? 'grátis' : formatCurrency(order.crustPrice)
-    const formattedPizzaPrice = formatCurrency(order.pizzaPrice)
-    const formattedUnitPrice = formatCurrency(order.unitPrice)
-    const formattedSubtotal = formatCurrency(order.subtotal)
 
     return this.responseBuilder
       .addCode(STEP_INDICATORS.FINISH)
       .addMono()
       .addText('# RESUMO DO PEDIDO')
       .addLine()
-      .addText('Sabor:', flavorName, `(${formattedPizzaPrice})`)
+      .addText('Sabor:', flavorName, `(${formatCurrency(order.pizzaPrice)})`)
       .addText('Borda:', order.selectedCrust.name, `(${formattedCrustPrice})`)
       .addEmptyLine()
       .addText('Quantidade:', order.quantity.toString())
-      .addText('Preço Unit.:', formattedUnitPrice)
-      .addText('Total:', formattedSubtotal)
+      .addText('Preço Unit.:', formatCurrency(order.unitPrice))
+      .addText('Total:', formatCurrency(order.subtotal))
       .addEmptyLine()
       .addText('Observação:', order.notes || 'nenhuma')
       .addLine()
