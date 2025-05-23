@@ -17,7 +17,9 @@ type OrderData = ContextData & {
 export class PizzaNotesFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const data = context.data as ContextData
-    const isValidOrder = Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity)
+    const isValidOrder = Boolean(
+      data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity,
+    )
 
     if (!isValidOrder) {
       this.state.resetState(phone)
@@ -28,7 +30,7 @@ export class PizzaNotesFlow extends BaseFlow {
         .build()
     }
 
-    const notes = message === '0' ? undefined : message
+    const notes = message === '0' ? '' : message
     const orderCalculation = this.calculateOrder(data)
 
     this.state.updateContext(phone, {

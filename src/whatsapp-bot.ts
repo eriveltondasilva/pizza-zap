@@ -1,12 +1,12 @@
 import type { Message } from '@wppconnect-team/wppconnect'
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 
 import { MESSAGE_TYPES } from './config/enums.ts'
 
-import type { ConversationManager } from './core/conversation-manager.ts'
-import type { LoggerProvider, WhatsappClientProvider } from './providers/index.ts'
-import type { ListSenderService, TextSenderService } from './services/senders/index.ts'
-import type { MessageValidation } from './validations/message-validation.ts'
+import { ConversationManager } from './core/conversation-manager.ts'
+import { LoggerProvider, WhatsappClientProvider } from './providers/index.ts'
+import { ListSenderService, TextSenderService } from './services/senders/index.ts'
+import { MessageValidation } from './validations/message-validation.ts'
 
 import type { ISender } from './types/interfaces.ts'
 
@@ -18,12 +18,12 @@ interface IWhatsappBot {
 @injectable()
 export class WhatsappBot implements IWhatsappBot {
   constructor(
-    private readonly client: WhatsappClientProvider,
-    private readonly textMessageSender: TextSenderService,
-    private readonly listMessageSender: ListSenderService,
-    private readonly conversation: ConversationManager,
-    private readonly messageValidation: MessageValidation,
-    private readonly logger: LoggerProvider,
+    @inject(WhatsappClientProvider) private client: WhatsappClientProvider,
+    @inject(TextSenderService) private textMessageSender: TextSenderService,
+    @inject(ListSenderService) private listMessageSender: ListSenderService,
+    @inject(ConversationManager) private conversation: ConversationManager,
+    @inject(MessageValidation) private messageValidation: MessageValidation,
+    @inject(LoggerProvider) private logger: LoggerProvider,
   ) {}
 
   public async initialize(): Promise<void> {

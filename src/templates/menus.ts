@@ -53,7 +53,14 @@ export const paymentMenu = [
   menuFooter,
 ]
 
-export const confirmMenu = ['🆗 *MENU DE CONFIRMAÇÃO*', '', '1️⃣ - Confirmar ✅', '2️⃣ - Cancelar ❌', '', menuFooter]
+export const confirmMenu = [
+  '🆗 *MENU DE CONFIRMAÇÃO*',
+  '',
+  '1️⃣ - Confirmar ✅',
+  '2️⃣ - Cancelar ❌',
+  '',
+  menuFooter,
+]
 
 export const changeMenu = [
   '🔢 *MENU DE TROCO*',

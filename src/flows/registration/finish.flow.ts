@@ -25,7 +25,10 @@ export class RegistrationFinishFlow extends BaseFlow {
       this.state.deleteState(phone)
       return this.responseBuilder
         .addBold('❌ CADASTRO CANCELADO')
-        .addText('Infelizmente, você precisará de um cadastro para fazer um pedido.', 'Tente novamente mais tarde.')
+        .addText(
+          'Infelizmente, você precisará de um cadastro para fazer um pedido.',
+          'Tente novamente mais tarde.',
+        )
         .build()
     }
 

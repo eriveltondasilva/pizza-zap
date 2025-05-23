@@ -11,6 +11,7 @@ export class CustomerRepository {
   }
 
   async create(data: Customer) {
+    console.log('Creating customer', data)
     return customers[1]
   }
 

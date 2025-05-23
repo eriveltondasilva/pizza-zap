@@ -1,6 +1,11 @@
 import { inject, singleton } from 'tsyringe'
 
-import { CartService, ContextService, CustomerService, StateManager } from '../services/states/index.js'
+import {
+  CartService,
+  ContextService,
+  CustomerService,
+  StateManager,
+} from '../services/states/index.js'
 
 import type { FLOWS } from '../config/enums.js'
 import type { CartItem, Customer } from '../types/entities.js'

@@ -1,5 +1,5 @@
-import { LoggerProvider } from '../providers/logger.ts'
 import { inject, injectable } from 'tsyringe'
+import { LoggerProvider } from '../providers/logger.ts'
 
 import type { Validation } from './types.ts'
 
@@ -21,6 +21,11 @@ export class NameValidation implements Validation<string> {
   }
 
   getErrorMessage(): string[] {
-    return ['❌ *NOME INVÁLIDO*', '', 'Por favor, informe seu nome completo.', '> Exemplo: "_João da Silva_"']
+    return [
+      '❌ *NOME INVÁLIDO*',
+      '',
+      'Por favor, informe seu nome completo.',
+      '> Exemplo: "_João da Silva_"',
+    ]
   }
 }

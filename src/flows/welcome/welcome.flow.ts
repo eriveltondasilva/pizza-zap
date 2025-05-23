@@ -30,7 +30,10 @@ export class WelcomeFlow extends BaseFlow {
 
     return this.responseBuilder
       .addText('Olá,', customer.name)
-      .addText('Que bom ter você de volta por aqui!', 'Estamos ansiosos para preparar algo delicioso para você. 😋🍽')
+      .addText(
+        'Que bom ter você de volta por aqui!',
+        'Estamos ansiosos para preparar algo delicioso para você. 😋🍽',
+      )
       .addText('Para começar, escolha uma das opções abaixo:')
       .addEmptyLine()
       .addMenu(mainMenu)

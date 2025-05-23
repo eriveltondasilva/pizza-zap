@@ -54,7 +54,10 @@ export class CheckoutStartFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.ORDER)
     return this.responseBuilder
       .addBold('❌ CARRINHO VAZIO')
-      .addText('Seu carrinho está vazio.', 'Por favor, adicione itens ao carrinho antes de finalizar o pedido.')
+      .addText(
+        'Seu carrinho está vazio.',
+        'Por favor, adicione itens ao carrinho antes de finalizar o pedido.',
+      )
       .addEmptyLine()
       .addMenu(orderMenu)
       .build()

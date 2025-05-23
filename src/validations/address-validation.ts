@@ -1,5 +1,5 @@
-import { LoggerProvider } from '../providers/logger.ts'
 import { inject, injectable } from 'tsyringe'
+import { LoggerProvider } from '../providers/logger.ts'
 
 import type { Validation } from './types.ts'
 

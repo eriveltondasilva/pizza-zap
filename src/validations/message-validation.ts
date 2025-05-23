@@ -1,5 +1,5 @@
-import { PHONE_NUMBER } from '../config/constants.ts'
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
+import { PHONE_NUMBER } from '../config/constants.ts'
 
 interface Validation {
   validate(message: Message): boolean

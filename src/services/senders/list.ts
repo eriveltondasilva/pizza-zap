@@ -17,7 +17,17 @@ export class ListSenderService implements ISender {
 
   //#
   private createListSections(list: ResponseList[]) {
-    const groupedRows = Object.groupBy(list, (row) => row.category)
+    const groupedRows = list.reduce(
+      (acc, row) => {
+        const category = row.category
+        if (!acc[category]) {
+          acc[category] = []
+        }
+        acc[category].push(row)
+        return acc
+      },
+      {} as Record<string, ResponseList[]>,
+    )
 
     return Object.entries(groupedRows).map(([category, items]) => ({
       title: category.toUpperCase(),

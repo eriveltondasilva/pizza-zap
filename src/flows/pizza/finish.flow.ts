@@ -1,7 +1,6 @@
-import { ITEM_TYPES } from '../../config/enums.js'
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '../../config/enums.js'
+import { FLOWS, ITEM_TYPES } from '../../config/enums.js'
 import { orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
@@ -52,7 +51,6 @@ export class PizzaFinishFlow extends BaseFlow {
       .build()
   }
 
-  //#
   private createCartItem(item: ContextData): CartItem {
     const itemName = this.createItemName(item.selectedFlavors, item.selectedCrust)
 
@@ -63,14 +61,17 @@ export class PizzaFinishFlow extends BaseFlow {
       unitPrice: item.unitPrice,
       subtotal: item.subtotal,
       details: {
-        crust: item.selectedCrust,
-        flavors: item.selectedFlavors,
-        notes: item.notes,
+        flavors: item?.selectedFlavors,
+        crust: item?.selectedCrust,
+        notes: item?.notes || '',
       },
     }
   }
 
-  private createItemName(selectedFlavors: ContextData['selectedFlavors'], selectedCrust: ContextData['selectedCrust']) {
+  private createItemName(
+    selectedFlavors: ContextData['selectedFlavors'],
+    selectedCrust: ContextData['selectedCrust'],
+  ) {
     const flavorName = selectedFlavors.map((flavor) => flavor.name).join(' + ')
     return `Pizza ${flavorName} (borda ${selectedCrust.name})`
   }

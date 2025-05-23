@@ -23,7 +23,9 @@ export class ListResponseBuilder extends BaseResponseBuilder<ListBuilderState> {
   //#
   public build() {
     if (!this.state.list.length) {
-      throw new Error('Lista vazia: Adicione pelo menos um item à lista antes de construir a resposta')
+      throw new Error(
+        'Lista vazia: Adicione pelo menos um item à lista antes de construir a resposta',
+      )
     }
 
     const response = {

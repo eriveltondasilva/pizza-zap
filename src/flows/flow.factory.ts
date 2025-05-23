@@ -21,7 +21,12 @@ import {
   PizzaStartFlow,
 } from './pizza/index.js'
 
-import { DrinkFinishFlow, DrinkQuantityFlow, DrinkSelectionFlow, DrinkStartFlow } from './drink/index.js'
+import {
+  DrinkFinishFlow,
+  DrinkQuantityFlow,
+  DrinkSelectionFlow,
+  DrinkStartFlow,
+} from './drink/index.js'
 
 import {
   CheckoutAddressFlow,

@@ -15,7 +15,8 @@ const buildTitle = (id: string, name: string, price: string) => `${id} - ${name}
 const buildPrice = (price: number) => (price === 0 ? 'grátis' : formatCurrency(price))
 
 function buildListItem(item: ListItem, index: number, defaultCategory = '') {
-  if (!item || typeof item !== 'object') throw new Error('Item inválido fornecido para buildListItem')
+  if (!item || typeof item !== 'object')
+    throw new Error('Item inválido fornecido para buildListItem')
 
   const rowId = buildId(index)
   const price = buildPrice(Number(item.price) || 0)

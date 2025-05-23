@@ -10,9 +10,12 @@ const logger = container.resolve(LoggerProvider)
 
 export function isValidName(name: string): boolean {
   if (name.length < VALIDATION.MIN_LENGTH || name.length > VALIDATION.MAX_LENGTH) {
-    logger.warn(`Name validation failed: name is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`, {
-      name,
-    })
+    logger.warn(
+      `Name validation failed: name is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`,
+      {
+        name,
+      },
+    )
     return false
   }
 
@@ -21,9 +24,12 @@ export function isValidName(name: string): boolean {
 
 export function isValidAddress(address: string): boolean {
   if (address.length < VALIDATION.MIN_LENGTH || address.length > VALIDATION.MAX_LENGTH) {
-    logger.warn(`Address validation failed: address is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`, {
-      address,
-    })
+    logger.warn(
+      `Address validation failed: address is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`,
+      {
+        address,
+      },
+    )
     return false
   }
 
