@@ -17,15 +17,17 @@
     "dev:watch": "tsx --env-file=.env -r tsconfig-paths/register watch src/index.ts",
     "clean": "rm -rf dist",
 
-    "fmt": "biome format --fix --verbose src",
-    "lint": "biome lint --fix --unsafe --verbose src",
-    "check": "biome check --fix --unsafe --verbose src",
+    "fmt": "biome format --fix --verbose ./src",
+    "lint": "biome lint --fix --unsafe --verbose ./src",
+    "check": "biome check --fix --unsafe --verbose ./src",
+    "check:types": "tsc --noEmit",
 
-    "type:check": "tsc --noEmit"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.14.1",
+    "husky": "^9.1.7",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
