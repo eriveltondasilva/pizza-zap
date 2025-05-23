@@ -1,12 +1,12 @@
 import { inject, injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { CustomerRepository } from '@/repositories/customer.js'
-import { mainMenu } from '@/templates/menus.js'
+import { FLOWS } from '../../config/enums.js'
+import { LoggerProvider } from '../../providers/logger.js'
+import { CustomerRepository } from '../../repositories/customer.js'
+import { mainMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 import type { ContextData } from './@registration.js'
 
 @injectable()
@@ -25,10 +25,7 @@ export class RegistrationFinishFlow extends BaseFlow {
       this.state.deleteState(phone)
       return this.responseBuilder
         .addBold('❌ CADASTRO CANCELADO')
-        .addText(
-          'Infelizmente, você precisará de um cadastro para fazer um pedido.',
-          'Tente novamente mais tarde.',
-        )
+        .addText('Infelizmente, você precisará de um cadastro para fazer um pedido.', 'Tente novamente mais tarde.')
         .build()
     }
 

@@ -1,13 +1,14 @@
 import type { Message } from '@wppconnect-team/wppconnect'
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
-import { MESSAGE_TYPES } from '@/config/enums.js'
-import { ConversationManager } from '@/core/conversation-manager.js'
-import { ListSenderService, TextSenderService } from '@/services/senders/index.js'
-import { MessageValidation } from '@/validations/message-validation.js'
-import { LoggerProvider, WhatsappClientProvider } from './providers/index.js'
+import { MESSAGE_TYPES } from './config/enums.ts'
 
-import type { ISender } from '@/types/interfaces.js'
+import type { ConversationManager } from './core/conversation-manager.ts'
+import type { LoggerProvider, WhatsappClientProvider } from './providers/index.ts'
+import type { ListSenderService, TextSenderService } from './services/senders/index.ts'
+import type { MessageValidation } from './validations/message-validation.ts'
+
+import type { ISender } from './types/interfaces.ts'
 
 interface IWhatsappBot {
   initialize(): Promise<void>
@@ -17,12 +18,12 @@ interface IWhatsappBot {
 @injectable()
 export class WhatsappBot implements IWhatsappBot {
   constructor(
-    @inject(WhatsappClientProvider) private readonly client: WhatsappClientProvider,
-    @inject(TextSenderService) private readonly textMessageSender: TextSenderService,
-    @inject(ListSenderService) private readonly listMessageSender: ListSenderService,
-    @inject(ConversationManager) private readonly conversation: ConversationManager,
-    @inject(MessageValidation) private readonly messageValidation: MessageValidation,
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
+    private readonly client: WhatsappClientProvider,
+    private readonly textMessageSender: TextSenderService,
+    private readonly listMessageSender: ListSenderService,
+    private readonly conversation: ConversationManager,
+    private readonly messageValidation: MessageValidation,
+    private readonly logger: LoggerProvider,
   ) {}
 
   public async initialize(): Promise<void> {
@@ -66,7 +67,7 @@ export class WhatsappBot implements IWhatsappBot {
         [MESSAGE_TYPES.TEXT]: this.textMessageSender,
         [MESSAGE_TYPES.LIST]: this.listMessageSender,
       }
-      const messageSender = senderMap[type]
+      const messageSender = senderMap[type as MESSAGE_TYPES]
 
       if (!messageSender) throw new Error(`Tipo de mensagem não suportado: ${type}`)
 

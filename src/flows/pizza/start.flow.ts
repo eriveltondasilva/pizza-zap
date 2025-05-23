@@ -1,15 +1,15 @@
-import { isEmpty } from '@/utils/is-empty.js'
 import { inject, injectable } from 'tsyringe'
 
-import { ListResponseBuilder } from '@/builders/responses/list.js'
-import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { FlavorRepository } from '@/repositories/flavor.js'
-import { buildFlavorList } from '@/utils/list-builder.js'
+import { isEmpty } from '../../utils/is-empty.js'
+import { ListResponseBuilder } from '../../builders/responses/list.js'
+import { FLOWS } from '../../config/enums.js'
+import { LoggerProvider } from '../../providers/logger.js'
+import { FlavorRepository } from '../../repositories/flavor.js'
+import { buildFlavorList } from '../../utils/list-builder.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@pizza.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 const MESSAGES = {
   SINGLE_FLAVOR: '🍕 ESCOLHA O SABOR DA SUA PIZZA',

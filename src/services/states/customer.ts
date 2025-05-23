@@ -1,11 +1,11 @@
-import { isEmpty } from '@/utils/is-empty.js'
 import { inject, injectable } from 'tsyringe'
 
-import { LoggerProvider } from '@/providers/logger.js'
+import { isEmpty } from '../../utils/is-empty.js'
+import { LoggerProvider } from '../../providers/logger.js'
 import { StateManager } from './manager.js'
 
-import type { Customer } from '@/types/entities.js'
-import type { FlowState } from '@/types/flows.js'
+import type { Customer } from '../../types/entities.js'
+import type { FlowState } from '../../types/flows.js'
 
 /**
  * Serviço para gerenciamento dos dados do cliente no estado do fluxo
@@ -24,11 +24,7 @@ export class CustomerService {
    * @param customerUpdates - Atualizações parciais para os dados do cliente
    * @returns Estado atualizado
    */
-  public updateCustomer(
-    phone: string,
-    currentState: FlowState,
-    customerUpdates: Partial<Customer>,
-  ): FlowState {
+  public updateCustomer(phone: string, currentState: FlowState, customerUpdates: Partial<Customer>): FlowState {
     this.validateCurrentState(phone, currentState)
     this.validateCustomerUpdates(phone, customerUpdates)
 

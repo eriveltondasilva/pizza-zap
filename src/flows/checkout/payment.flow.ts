@@ -1,11 +1,11 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS, PAYMENT_METHODS } from '@/config/enums.js'
-import { paymentMenu } from '@/templates/menus.js'
+import { FLOWS, PAYMENT_METHODS } from '../../config/enums.js'
+import { paymentMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@checkout.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 const PAYMENT_MAP: Record<number, PAYMENT_METHODS> = {
   1: PAYMENT_METHODS.CREDIT,

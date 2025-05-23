@@ -1,12 +1,12 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { formatCurrency } from '@/utils/format-currency.js'
+import { FLOWS } from '../../config/enums.js'
+import { formatCurrency } from '../../utils/format-currency.js'
 import { BaseFlow } from '../base.flow.js'
 import { type ContextData, STEP_INDICATORS } from './@pizza.js'
 
-import type { Flavor } from '@/types/entities.js'
-import type { FlowParams } from '@/types/flows.js'
+import type { Flavor } from '../../types/entities.js'
+import type { FlowParams } from '../../types/flows.js'
 
 type OrderData = ContextData & {
   crustPrice: number
@@ -17,9 +17,7 @@ type OrderData = ContextData & {
 export class PizzaNotesFlow extends BaseFlow {
   public async handle({ phone, message, context }: FlowParams) {
     const data = context.data as ContextData
-    const isValidOrder = Boolean(
-      data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity,
-    )
+    const isValidOrder = Boolean(data.selectedFlavors?.length > 0 && data.selectedCrust.name && data.quantity)
 
     if (!isValidOrder) {
       this.state.resetState(phone)

@@ -1,9 +1,9 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
+import { FLOWS } from '../../config/enums.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class RegistrationStartFlow extends BaseFlow {

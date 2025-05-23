@@ -1,4 +1,4 @@
-import { PHONE_NUMBER } from '@/config/constants.js'
+import { PHONE_NUMBER } from '../config/constants.ts'
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 
 interface Validation {

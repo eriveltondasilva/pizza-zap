@@ -1,11 +1,10 @@
 import { inject, injectable } from 'tsyringe'
 
-import { LoggerProvider } from '@/providers/logger.js'
+import { LoggerProvider } from '../../providers/logger.js'
 import { StateManager } from './manager.js'
-
-import type { FLOWS } from '@/config/enums.js'
-import type { FlowContext, FlowState } from '@/types/flows.js'
-import { isEmpty } from '@/utils/is-empty.js'
+import type { FLOWS } from '../../config/enums.js'
+import type { FlowContext, FlowState } from '../../types/flows.js'
+import { isEmpty } from '../../utils/is-empty.js'
 
 /**
  * Serviço para gerenciamento do contexto no estado do fluxo
@@ -26,11 +25,7 @@ export class ContextService {
    * @param contextUpdates - Atualizações parciais para o contexto
    * @returns Estado atualizado
    */
-  public updateContext(
-    phone: string,
-    currentState: FlowState,
-    contextUpdates: Partial<FlowContext>,
-  ): FlowState {
+  public updateContext(phone: string, currentState: FlowState, contextUpdates: Partial<FlowContext>): FlowState {
     if (isEmpty(contextUpdates)) {
       this.logger.warn('Tentativa de atualizar contexto com dados vazios')
       return currentState

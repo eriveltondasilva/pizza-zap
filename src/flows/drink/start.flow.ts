@@ -1,15 +1,15 @@
 import { inject, injectable } from 'tsyringe'
 
-import { ListResponseBuilder } from '@/builders/responses/list.js'
-import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { DrinkRepository } from '@/repositories/drink.js'
-import { isEmpty } from '@/utils/is-empty.js'
-import { buildDrinkList } from '@/utils/list-builder.js'
+import { ListResponseBuilder } from '../../builders/responses/list.js'
+import { FLOWS } from '../../config/enums.js'
+import { LoggerProvider } from '../../providers/logger.js'
+import { DrinkRepository } from '../../repositories/drink.js'
+import { isEmpty } from '../../utils/is-empty.js'
+import { buildDrinkList } from '../../utils/list-builder.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@drink.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class DrinkStartFlow extends BaseFlow {

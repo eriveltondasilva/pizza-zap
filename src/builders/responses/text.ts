@@ -1,7 +1,7 @@
-import { MESSAGE_TYPES } from '@/config/enums.js'
+import { MESSAGE_TYPES } from '../../config/enums.js'
 import { BaseResponseBuilder } from './base.js'
 
-import type { FlowResponse } from '@/types/flows.js'
+import type { FlowResponse } from '../../types/flows.js'
 
 export class TextResponseBuilder extends BaseResponseBuilder {
   public addMono(text?: string): this {

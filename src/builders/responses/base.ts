@@ -1,4 +1,4 @@
-import type { FlowResponse } from '@/types/flows.js'
+import type { FlowResponse } from '../../types/flows.js'
 
 export type BuilderState = {
   text: string[]

@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS, MENU_OPTIONS } from '@/config/enums.js'
-import { mainMenu, orderMenu } from '@/templates/menus.js'
+import { FLOWS, MENU_OPTIONS } from '../../config/enums.js'
+import { mainMenu, orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { FlowParams, MenuActionMap } from '@/types/flows.js'
+import type { FlowParams, MenuActionMap } from '../../types/flows.js'
 
 @injectable()
 export class MenuFlow extends BaseFlow {

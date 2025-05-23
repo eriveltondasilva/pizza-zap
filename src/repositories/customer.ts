@@ -1,4 +1,4 @@
-import type { Customer } from '@/types/entities.js'
+import type { Customer } from '../types/entities.js'
 import customers from './data/customers-seed.json' with { type: 'json' }
 
 export class CustomerRepository {

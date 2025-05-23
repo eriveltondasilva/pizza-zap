@@ -1,12 +1,12 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { formatCurrency } from '@/utils/format-currency.js'
-import { isValidQuantity } from '@/utils/validations.js'
+import { FLOWS } from '../../config/enums.js'
+import { formatCurrency } from '../../utils/format-currency.js'
+import { isValidQuantity } from '../../utils/validations.js'
 import { BaseFlow } from '../base.flow.js'
 import { type ContextData, STEP_INDICATORS } from './@drink.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class DrinkQuantityFlow extends BaseFlow {

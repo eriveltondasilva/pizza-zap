@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { isValidAddress } from '@/utils/validations.js'
+import { FLOWS } from '../../config/enums.js'
+import { isValidAddress } from '../../utils/validations.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 import type { ContextData } from './@registration.js'
 
 @injectable()

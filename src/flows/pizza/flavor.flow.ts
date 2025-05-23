@@ -1,15 +1,15 @@
 import { inject, injectable } from 'tsyringe'
 
-import { ListResponseBuilder } from '@/builders/responses/list.js'
-import { FLOWS } from '@/config/enums.js'
-import { FlavorRepository } from '@/repositories/flavor.js'
-import { deduplicateFlavor } from '@/utils/deduplicate-flavor.js'
-import { buildFlavorList } from '@/utils/list-builder.js'
-import { parseIndex } from '@/utils/parse-index.js'
+import { ListResponseBuilder } from '../../builders/responses/list.js'
+import { FLOWS } from '../../config/enums.js'
+import { FlavorRepository } from '../../repositories/flavor.js'
+import { deduplicateFlavor } from '../../utils/deduplicate-flavor.js'
+import { buildFlavorList } from '../../utils/list-builder.js'
+import { parseIndex } from '../../utils/parse-index.js'
 import { BaseFlow } from '../base.flow.js'
 import { type ContextData, STEP_INDICATORS } from './@pizza.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class PizzaFlavorFlow extends BaseFlow {

@@ -1,4 +1,4 @@
-import type { Flavor } from '@/types/entities.js'
+import type { Flavor } from '../types/entities.ts'
 
 export function deduplicateFlavor(flavors: Flavor[]) {
   if (flavors.length <= 1) return flavors

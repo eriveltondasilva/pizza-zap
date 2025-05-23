@@ -1,4 +1,4 @@
-import type { Drink } from '@/types/entities.js'
+import type { Drink } from '../types/entities.js'
 import drinks from './data/drinks-seed.json' with { type: 'json' }
 
 export class DrinkRepository {

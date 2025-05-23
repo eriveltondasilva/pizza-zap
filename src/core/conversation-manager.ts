@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe'
 
-import { FlowFactory } from '@/flows/flow.factory.js'
-import { LoggerProvider } from '@/providers/logger.js'
+import { FlowFactory } from '../flows/flow.factory.js'
+import { LoggerProvider } from '../providers/logger.js'
 import { StateFacade } from './state.facade.js'
 
-import type { FlowResponse } from '@/types/flows.js'
+import type { FlowResponse } from '../types/flows.js'
 
 @injectable()
 export class ConversationManager {

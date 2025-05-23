@@ -1,7 +1,7 @@
-import { LoggerProvider } from '@/providers/logger.js'
+import { LoggerProvider } from '../providers/logger.ts'
 import { inject, injectable } from 'tsyringe'
 
-import type { Validation } from './types.js'
+import type { Validation } from './types.ts'
 
 @injectable()
 export class QuantityValidation implements Validation<number> {

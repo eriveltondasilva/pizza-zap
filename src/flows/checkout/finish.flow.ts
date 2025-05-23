@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { mainMenu, orderMenu } from '@/templates/menus.js'
+import { FLOWS } from '../../config/enums.js'
+import { mainMenu, orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 const MESSAGE_SUCCEED = {
   TITLE: '✅ PEDIDO REGISTRADO!',

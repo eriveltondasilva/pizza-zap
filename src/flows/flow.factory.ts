@@ -1,7 +1,6 @@
 import { container, injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-
+import { FLOWS } from '../config/enums.js'
 import { MenuFlow } from './menu/menu.flow.js'
 import { OrderFlow } from './order/order.flow.js'
 import { WelcomeFlow } from './welcome/welcome.flow.js'
@@ -22,12 +21,7 @@ import {
   PizzaStartFlow,
 } from './pizza/index.js'
 
-import {
-  DrinkFinishFlow,
-  DrinkQuantityFlow,
-  DrinkSelectionFlow,
-  DrinkStartFlow,
-} from './drink/index.js'
+import { DrinkFinishFlow, DrinkQuantityFlow, DrinkSelectionFlow, DrinkStartFlow } from './drink/index.js'
 
 import {
   CheckoutAddressFlow,

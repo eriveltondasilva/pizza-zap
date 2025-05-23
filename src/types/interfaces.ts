@@ -1,6 +1,6 @@
 import type { Whatsapp } from '@wppconnect-team/wppconnect'
-import type { FlowParams, FlowResponse } from './flows.js'
-import type { ResponseContent } from './responses.js'
+import type { FlowParams, FlowResponse } from './flows.ts'
+import type { ResponseContent } from './responses.ts'
 
 export interface IFlow {
   handle(params: FlowParams): FlowResponse | Promise<FlowResponse>

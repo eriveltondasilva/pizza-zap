@@ -2,18 +2,17 @@
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 import { container } from 'tsyringe'
 
-import { PHONE_NUMBER } from '@/config/constants.js'
-import { VALIDATION } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
+import { PHONE_NUMBER } from '../config/constants.ts'
+import { VALIDATION } from '../config/enums.ts'
+import { LoggerProvider } from '../providers/logger.ts'
 
 const logger = container.resolve(LoggerProvider)
 
 export function isValidName(name: string): boolean {
   if (name.length < VALIDATION.MIN_LENGTH || name.length > VALIDATION.MAX_LENGTH) {
-    logger.warn(
-      `Name validation failed: name is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`,
-      { name },
-    )
+    logger.warn(`Name validation failed: name is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`, {
+      name,
+    })
     return false
   }
 
@@ -22,10 +21,9 @@ export function isValidName(name: string): boolean {
 
 export function isValidAddress(address: string): boolean {
   if (address.length < VALIDATION.MIN_LENGTH || address.length > VALIDATION.MAX_LENGTH) {
-    logger.warn(
-      `Address validation failed: address is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`,
-      { address },
-    )
+    logger.warn(`Address validation failed: address is missing (${VALIDATION.MIN_LENGTH} - ${VALIDATION.MAX_LENGTH})`, {
+      address,
+    })
     return false
   }
 

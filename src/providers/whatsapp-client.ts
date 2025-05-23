@@ -1,7 +1,7 @@
 import { type CreateOptions, type Whatsapp, create } from '@wppconnect-team/wppconnect'
 import { inject, singleton } from 'tsyringe'
 
-import { PHONE_NUMBER, SESSION_NAME } from '@/config/constants.js'
+import { PHONE_NUMBER, SESSION_NAME } from '../config/constants.js'
 import { LoggerProvider } from './logger.js'
 
 interface IWhatsappClientProvider {

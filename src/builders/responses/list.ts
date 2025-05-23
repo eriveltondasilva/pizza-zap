@@ -1,7 +1,7 @@
-import { MESSAGE_TYPES } from '@/config/enums.js'
+import { MESSAGE_TYPES } from '../../config/enums.js'
 import { BaseResponseBuilder, type BuilderState } from './base.js'
 
-import type { ResponseList } from '@/types/responses.js'
+import type { ResponseList } from '../../types/responses.js'
 
 export type ListBuilderState = BuilderState & {
   list: ResponseList[]
@@ -23,9 +23,7 @@ export class ListResponseBuilder extends BaseResponseBuilder<ListBuilderState> {
   //#
   public build() {
     if (!this.state.list.length) {
-      throw new Error(
-        'Lista vazia: Adicione pelo menos um item à lista antes de construir a resposta',
-      )
+      throw new Error('Lista vazia: Adicione pelo menos um item à lista antes de construir a resposta')
     }
 
     const response = {

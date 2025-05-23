@@ -1,12 +1,12 @@
 // TODO: Implement drink confirm flow
 import { injectable } from 'tsyringe'
 
-import { FLOWS, ITEM_TYPES } from '@/config/enums.js'
-import { orderMenu } from '@/templates/menus.js'
+import { FLOWS, ITEM_TYPES } from '../../config/enums.js'
+import { orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { CartItem } from '@/types/entities.js'
-import type { FlowParams } from '@/types/flows.js'
+import type { CartItem } from '../../types/entities.js'
+import type { FlowParams } from '../../types/flows.js'
 import type { ContextData } from './@drink.js'
 
 const MESSAGES = {

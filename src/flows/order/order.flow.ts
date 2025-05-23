@@ -1,14 +1,13 @@
 import { inject, injectable } from 'tsyringe'
 
-import { FLOWS, ORDER_OPTIONS } from '@/config/enums.js'
-import { orderMenu } from '@/templates/menus.js'
-
+import { FLOWS, ORDER_OPTIONS } from '../../config/enums.js'
+import { orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 import { CheckoutStartFlow } from '../checkout/start.flow.js'
 import { DrinkStartFlow } from '../drink/start.flow.js'
 import { PizzaStartFlow } from '../pizza/start.flow.js'
 
-import type { FlowParams, OrderActionMap } from '@/types/flows.js'
+import type { FlowParams, OrderActionMap } from '../../types/flows.js'
 
 @injectable()
 export class OrderFlow extends BaseFlow {

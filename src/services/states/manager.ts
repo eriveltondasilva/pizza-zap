@@ -1,12 +1,12 @@
 import { inject, singleton } from 'tsyringe'
 
-import { STATE_EXPIRATION_TIME } from '@/config/constants.js'
-import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { isEmpty } from '@/utils/is-empty.js'
+import { STATE_EXPIRATION_TIME } from '../../config/constants.js'
+import { FLOWS } from '../../config/enums.js'
+import { LoggerProvider } from '../../providers/logger.js'
+import { isEmpty } from '../../utils/is-empty.js'
 import { StateStore } from './store.js'
 
-import type { FlowState } from '@/types/flows.js'
+import type { FlowState } from '../../types/flows.js'
 
 const Messages = {
   EXPIRED: 'Estado expirado, inicializando novo estado',

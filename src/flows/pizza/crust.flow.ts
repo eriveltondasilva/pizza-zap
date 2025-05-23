@@ -1,14 +1,14 @@
 import { inject, injectable } from 'tsyringe'
 
-import { ListResponseBuilder } from '@/builders/responses/list.js'
-import { FLOWS } from '@/config/enums.js'
-import { CrustRepository } from '@/repositories/crust.js'
-import { buildCrustList } from '@/utils/list-builder.js'
-import { parseIndex } from '@/utils/parse-index.js'
+import { ListResponseBuilder } from '../../builders/responses/list.js'
+import { FLOWS } from '../../config/enums.js'
+import { CrustRepository } from '../../repositories/crust.js'
+import { buildCrustList } from '../../utils/list-builder.js'
+import { parseIndex } from '../../utils/parse-index.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@pizza.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class PizzaCrustFlow extends BaseFlow {

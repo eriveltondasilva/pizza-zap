@@ -1,6 +1,6 @@
-import type { FLOWS, MENU_OPTIONS, MESSAGE_TYPES, ORDER_OPTIONS } from '@/config/enums.js'
-import type { CartItem, Customer } from './entities.js'
-import type { ResponseContent } from './responses.js'
+import type { FLOWS, MENU_OPTIONS, MESSAGE_TYPES, ORDER_OPTIONS } from '../config/enums.ts'
+import type { CartItem, Customer } from './entities.ts'
+import type { ResponseContent } from './responses.ts'
 
 export type FlowResponse = {
   type: MESSAGE_TYPES

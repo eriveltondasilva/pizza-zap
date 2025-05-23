@@ -1,12 +1,12 @@
-import { ITEM_TYPES } from '@/config/enums.js'
+import { ITEM_TYPES } from '../../config/enums.js'
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { orderMenu } from '@/templates/menus.js'
+import { FLOWS } from '../../config/enums.js'
+import { orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { CartItem } from '@/types/entities.js'
-import type { FlowParams } from '@/types/flows.js'
+import type { CartItem } from '../../types/entities.js'
+import type { FlowParams } from '../../types/flows.js'
 import type { ContextData } from './@pizza.js'
 
 const MESSAGES = {
@@ -70,10 +70,7 @@ export class PizzaFinishFlow extends BaseFlow {
     }
   }
 
-  private createItemName(
-    selectedFlavors: ContextData['selectedFlavors'],
-    selectedCrust: ContextData['selectedCrust'],
-  ) {
+  private createItemName(selectedFlavors: ContextData['selectedFlavors'], selectedCrust: ContextData['selectedCrust']) {
     const flavorName = selectedFlavors.map((flavor) => flavor.name).join(' + ')
     return `Pizza ${flavorName} (borda ${selectedCrust.name})`
   }

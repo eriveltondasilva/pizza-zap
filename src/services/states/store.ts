@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe'
 
-import type { FlowState } from '@/types/flows.js'
+import type { FlowState } from '../../types/flows.js'
 
 /**
  * Classe responsável por armazenar e gerenciar o estado do fluxo de negócios.

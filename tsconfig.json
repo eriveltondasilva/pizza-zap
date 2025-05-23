@@ -1,4 +1,9 @@
 {
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true
+  },
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
@@ -7,18 +12,18 @@
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "importHelpers": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    // @tsconfig/node-ts
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true,
     //
+    "removeComments": true,
     "rootDir": "src",
-    "outDir": "dist",
-    //
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

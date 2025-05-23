@@ -1,15 +1,10 @@
 import { inject, singleton } from 'tsyringe'
 
-import {
-  CartService,
-  ContextService,
-  CustomerService,
-  StateManager,
-} from '@/services/states/index.js'
+import { CartService, ContextService, CustomerService, StateManager } from '../services/states/index.js'
 
-import type { FLOWS } from '@/config/enums.js'
-import type { CartItem, Customer } from '@/types/entities.js'
-import type { FlowContext, FlowData, FlowState } from '@/types/flows.js'
+import type { FLOWS } from '../config/enums.js'
+import type { CartItem, Customer } from '../types/entities.js'
+import type { FlowContext, FlowData, FlowState } from '../types/flows.js'
 
 /**
  * Facade para gerenciamento de estado do fluxo da aplicação.

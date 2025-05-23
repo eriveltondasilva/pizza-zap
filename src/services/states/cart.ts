@@ -1,11 +1,9 @@
-import { isEmpty } from '@/utils/is-empty.js'
+import { isEmpty } from '../../utils/is-empty.js'
 import { inject, injectable } from 'tsyringe'
-
-import { LoggerProvider } from '@/providers/logger.js'
+import { LoggerProvider } from '../../providers/logger.js'
 import { StateManager } from './manager.js'
-
-import type { CartItem } from '@/types/entities.js'
-import type { FlowState } from '@/types/flows.js'
+import type { CartItem } from '../../types/entities.js'
+import type { FlowState } from '../../types/flows.js'
 
 /**
  * Serviço responsável por gerenciar o estado do carrinho de compras.

@@ -1,4 +1,4 @@
-import type { Crust, Flavor } from '@/types/entities.js'
+import type { Crust, Flavor } from '../../types/entities.js'
 
 export type ContextData = {
   selectedFlavors: Flavor[]

@@ -1,14 +1,14 @@
 import { injectable } from 'tsyringe'
 
-import { FLOWS } from '@/config/enums.js'
-import { orderMenu, paymentMenu } from '@/templates/menus.js'
-import { formatCurrency } from '@/utils/format-currency.js'
-import { isEmpty } from '@/utils/is-empty.js'
+import { FLOWS } from '../../config/enums.js'
+import { orderMenu, paymentMenu } from '../../templates/menus.js'
+import { formatCurrency } from '../../utils/format-currency.js'
+import { isEmpty } from '../../utils/is-empty.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@checkout.js'
 
-import type { CartItem } from '@/types/entities.js'
-import type { FlowParams } from '@/types/flows.js'
+import type { CartItem } from '../../types/entities.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class CheckoutStartFlow extends BaseFlow {
@@ -54,10 +54,7 @@ export class CheckoutStartFlow extends BaseFlow {
     this.state.updateFlow(phone, FLOWS.ORDER)
     return this.responseBuilder
       .addBold('❌ CARRINHO VAZIO')
-      .addText(
-        'Seu carrinho está vazio.',
-        'Por favor, adicione itens ao carrinho antes de finalizar o pedido.',
-      )
+      .addText('Seu carrinho está vazio.', 'Por favor, adicione itens ao carrinho antes de finalizar o pedido.')
       .addEmptyLine()
       .addMenu(orderMenu)
       .build()

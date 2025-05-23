@@ -1,4 +1,4 @@
-import type { ITEM_TYPES } from '@/config/enums.js'
+import type { ITEM_TYPES } from '../config/enums.ts'
 
 export type Flavor = {
   id?: string

@@ -1,16 +1,16 @@
 import { inject, injectable } from 'tsyringe'
 
-import { ListResponseBuilder } from '@/builders/responses/list.js'
-import { FLOWS } from '@/config/enums.js'
-import { LoggerProvider } from '@/providers/logger.js'
-import { CrustRepository } from '@/repositories/crust.js'
-import { isEmpty } from '@/utils/is-empty.js'
-import { buildCrustList } from '@/utils/list-builder.js'
-import { isValidQuantity } from '@/utils/validations.js'
+import { ListResponseBuilder } from '../../builders/responses/list.js'
+import { FLOWS } from '../../config/enums.js'
+import { LoggerProvider } from '../../providers/logger.js'
+import { CrustRepository } from '../../repositories/crust.js'
+import { isEmpty } from '../../utils/is-empty.js'
+import { buildCrustList } from '../../utils/list-builder.js'
+import { isValidQuantity } from '../../utils/validations.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@pizza.js'
 
-import type { FlowParams } from '@/types/flows.js'
+import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class PizzaQuantityFlow extends BaseFlow {

@@ -1,5 +1,5 @@
-import type { LoggerProvider } from '@/providers/logger.js'
-import type { WhatsappBot } from './whatsapp-bot.js'
+import type { LoggerProvider } from './providers/logger.ts'
+import type { WhatsappBot } from './whatsapp-bot.ts'
 
 const PROCESS_EVENTS = {
   SIGINT: 'SIGINT',
