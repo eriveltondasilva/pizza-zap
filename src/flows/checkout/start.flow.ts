@@ -7,8 +7,7 @@ import { isEmpty } from '../../utils/is-empty.js'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@checkout.js'
 
-import type { CartItem } from '../../types/entities.js'
-import type { FlowParams } from '../../types/flows.js'
+import type { CartItem, FlowParams } from '../../types/index.js'
 
 @injectable()
 export class CheckoutStartFlow extends BaseFlow {

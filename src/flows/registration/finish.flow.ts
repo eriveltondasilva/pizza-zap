@@ -12,8 +12,8 @@ import type { ContextData } from './@registration.js'
 @injectable()
 export class RegistrationFinishFlow extends BaseFlow {
   constructor(
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
-    @inject(CustomerRepository) private readonly customerRepository: CustomerRepository,
+    @inject(LoggerProvider) private logger: LoggerProvider,
+    @inject(CustomerRepository) private customerRepository: CustomerRepository,
   ) {
     super()
   }

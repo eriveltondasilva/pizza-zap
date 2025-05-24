@@ -4,8 +4,7 @@ import { FLOWS, ITEM_TYPES } from '../../config/enums.js'
 import { orderMenu } from '../../templates/menus.js'
 import { BaseFlow } from '../base.flow.js'
 
-import type { CartItem } from '../../types/entities.js'
-import type { FlowParams } from '../../types/flows.js'
+import type { CartItem, FlowParams } from '../../types/index.js'
 import type { ContextData } from './@pizza.js'
 
 const MESSAGES = {

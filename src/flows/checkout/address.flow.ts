@@ -2,9 +2,9 @@ import { injectable } from 'tsyringe'
 
 import { FLOWS } from '../../config/enums.js'
 import { BaseFlow } from '../base.flow.js'
+import { type ContextData, STEP_INDICATORS } from './@checkout.js'
 
 import type { FlowParams } from '../../types/flows.js'
-import { type ContextData, STEP_INDICATORS } from './@checkout.js'
 
 const MIN_ADDRESS_LENGTH = 10
 const MAX_ADDRESS_LENGTH = 100

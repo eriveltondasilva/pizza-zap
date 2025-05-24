@@ -11,9 +11,39 @@ import type { FLOWS } from '../config/enums.js'
 import type { CartItem, Customer } from '../types/entities.js'
 import type { FlowContext, FlowData, FlowState } from '../types/flows.js'
 
+export interface IStateFacade {
+  // GERENCIAMENTO DE ESTADO
+  getState(phone: string): FlowState
+  hasState(phone: string): boolean
+  resetState(phone: string): FlowState
+  deleteState(phone: string): boolean
+  clearAllStates(): void
+
+  // GERENCIAMENTO DE CONTEXTO
+  getContext(phone: string): FlowContext
+  updateContext(phone: string, context: Partial<FlowContext>): FlowState
+
+  // DATA
+  updateData(phone: string, data: FlowData): FlowState
+  clearData(phone: string): FlowState
+
+  // FLOW
+  updateFlow(phone: string, flow: FLOWS): FlowState
+
+  // GERENCIAMENTO DE CLIENTE
+  getCustomer(phone: string): Customer
+  updateCustomer(phone: string, customer: Partial<Customer>): FlowState
+
+  // GERENCIAMENTO DE CARRINHO
+  getCart(phone: string): CartItem[]
+  addToCart(phone: string, item: CartItem): FlowState
+  removeFromCart(phone: string, index: number): FlowState
+  clearCart(phone: string): FlowState
+}
+
 /** Facade para gerenciamento de estado do fluxo da aplicação */
 @singleton()
-export class StateFacade {
+export class StateFacade implements IStateFacade {
   constructor(
     @inject(CartService) private cartService: CartService,
     @inject(ContextService) private contextService: ContextService,

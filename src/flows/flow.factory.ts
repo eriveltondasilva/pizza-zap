@@ -10,7 +10,7 @@ import {
   RegistrationFinishFlow,
   RegistrationNameFlow,
   RegistrationStartFlow,
-} from './registration/index.js'
+} from './registration/@index.ts'
 
 import {
   PizzaCrustFlow,
@@ -19,14 +19,14 @@ import {
   PizzaNotesFlow,
   PizzaQuantityFlow,
   PizzaStartFlow,
-} from './pizza/index.js'
+} from './pizza/@index.ts'
 
 import {
   DrinkFinishFlow,
   DrinkQuantityFlow,
   DrinkSelectionFlow,
   DrinkStartFlow,
-} from './drink/index.js'
+} from './drink/@index.ts'
 
 import {
   CheckoutAddressFlow,
@@ -35,7 +35,7 @@ import {
   CheckoutObservationsFlow,
   CheckoutPaymentFlow,
   CheckoutStartFlow,
-} from './checkout/index.js'
+} from './checkout/@index.ts'
 
 import type { BaseFlow } from './base.flow.js'
 

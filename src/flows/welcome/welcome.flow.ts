@@ -11,8 +11,8 @@ import type { FlowParams } from '../../types/flows.js'
 @injectable()
 export class WelcomeFlow extends BaseFlow {
   constructor(
-    @inject(CustomerRepository) private readonly customerRepository: CustomerRepository,
-    @inject(RegistrationStartFlow) private readonly registrationStartFlow: RegistrationStartFlow,
+    @inject(CustomerRepository) private customerRepository: CustomerRepository,
+    @inject(RegistrationStartFlow) private registrationStartFlow: RegistrationStartFlow,
   ) {
     super()
   }

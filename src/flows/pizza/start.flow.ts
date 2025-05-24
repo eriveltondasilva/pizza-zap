@@ -19,9 +19,9 @@ const MESSAGES = {
 @injectable()
 export class PizzaStartFlow extends BaseFlow {
   constructor(
-    @inject(FlavorRepository) private readonly flavorRepository: FlavorRepository,
-    @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
+    @inject(FlavorRepository) private flavorRepository: FlavorRepository,
+    @inject(ListResponseBuilder) private listResponseBuilder: ListResponseBuilder,
+    @inject(LoggerProvider) private logger: LoggerProvider,
   ) {
     super()
   }

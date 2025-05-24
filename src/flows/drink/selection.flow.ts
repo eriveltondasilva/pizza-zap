@@ -13,8 +13,8 @@ import type { FlowParams } from '../../types/flows.js'
 @injectable()
 export class DrinkSelectionFlow extends BaseFlow {
   constructor(
-    @inject(DrinkRepository) private readonly drinkRepository: DrinkRepository,
-    @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
+    @inject(DrinkRepository) private drinkRepository: DrinkRepository,
+    @inject(ListResponseBuilder) private listResponseBuilder: ListResponseBuilder,
   ) {
     super()
   }

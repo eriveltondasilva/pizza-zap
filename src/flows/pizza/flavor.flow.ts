@@ -14,8 +14,8 @@ import type { FlowParams } from '../../types/flows.js'
 @injectable()
 export class PizzaFlavorFlow extends BaseFlow {
   constructor(
-    @inject(FlavorRepository) private readonly flavorRepository: FlavorRepository,
-    @inject(ListResponseBuilder) private readonly listResponseBuilder: ListResponseBuilder,
+    @inject(FlavorRepository) private flavorRepository: FlavorRepository,
+    @inject(ListResponseBuilder) private listResponseBuilder: ListResponseBuilder,
   ) {
     super()
   }

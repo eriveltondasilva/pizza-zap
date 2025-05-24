@@ -12,9 +12,9 @@ import type { FlowParams, OrderActionMap } from '../../types/flows.js'
 @injectable()
 export class OrderFlow extends BaseFlow {
   constructor(
-    @inject(DrinkStartFlow) private readonly drinkStartFlow: DrinkStartFlow,
-    @inject(PizzaStartFlow) private readonly pizzaStartFlow: PizzaStartFlow,
-    @inject(CheckoutStartFlow) private readonly checkoutStartFlow: CheckoutStartFlow,
+    @inject(DrinkStartFlow) private drinkStartFlow: DrinkStartFlow,
+    @inject(PizzaStartFlow) private pizzaStartFlow: PizzaStartFlow,
+    @inject(CheckoutStartFlow) private checkoutStartFlow: CheckoutStartFlow,
   ) {
     super()
   }
