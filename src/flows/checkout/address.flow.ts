@@ -1,13 +1,11 @@
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 
 import { FLOWS } from '../../config/enums.js'
+import { AddressValidation } from '../../validations/address-validation.ts'
 import { BaseFlow } from '../base.flow.js'
 import { type ContextData, STEP_INDICATORS } from './@checkout.js'
 
 import type { FlowParams } from '../../types/flows.js'
-
-const MIN_ADDRESS_LENGTH = 10
-const MAX_ADDRESS_LENGTH = 100
 
 const OPTIONS = {
   KEEP_ADDRESS: 1,
@@ -16,6 +14,10 @@ const OPTIONS = {
 
 @injectable()
 export class CheckoutAddressFlow extends BaseFlow {
+  constructor(@inject(AddressValidation) private addressValidation: AddressValidation) {
+    super()
+  }
+
   public async handle({ phone, message, context }: FlowParams) {
     const { isUpdatingAddress } = context.data as ContextData
 
@@ -26,12 +28,8 @@ export class CheckoutAddressFlow extends BaseFlow {
 
   //#
   private handleAddressInput(phone: string, message: string) {
-    if (message.length < MIN_ADDRESS_LENGTH || message.length > MAX_ADDRESS_LENGTH) {
-      return this.responseBuilder
-        .addBold('❌ ENDEREÇO INVÁLIDO!')
-        .addText('Por favor, digite um endereço completo para entrega.')
-        .addQuote('Exemplo: Rua das Flores, 123 - próximo ao supermercado.')
-        .build()
+    if (!this.addressValidation.validate(message)) {
+      return this.responseBuilder.addText(...this.addressValidation.getError()).build()
     }
 
     this.state.updateContext(phone, {

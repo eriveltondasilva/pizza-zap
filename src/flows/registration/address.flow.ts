@@ -1,7 +1,7 @@
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 
 import { FLOWS } from '../../config/enums.js'
-import { isValidAddress } from '../../utils/validations.js'
+import { AddressValidation } from '../../validations/address-validation.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '../../types/flows.js'
@@ -9,14 +9,13 @@ import type { ContextData } from './@registration.js'
 
 @injectable()
 export class RegistrationAddressFlow extends BaseFlow {
+  constructor(@inject(AddressValidation) private addressValidation: AddressValidation) {
+    super()
+  }
+
   public async handle({ context, message: address, phone }: FlowParams) {
-    if (!isValidAddress(address)) {
-      return this.responseBuilder
-        .addBold('❌ ENDEREÇO INVÁLIDO')
-        .addEmptyLine()
-        .addText('Por favor, informe seu endereço completo.')
-        .addQuote('Exemplo: "_Rua das Flores, n° 83, Centro_"')
-        .build()
+    if (!this.addressValidation.validate(address)) {
+      return this.responseBuilder.addText(...this.addressValidation.getError()).build()
     }
 
     this.state.updateContext(phone, {

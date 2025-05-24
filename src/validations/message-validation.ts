@@ -1,15 +1,24 @@
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 import { PHONE_NUMBER } from '../config/constants.ts'
 
-import type {Validation} from './types.ts'
+import type { Validation } from './types.ts'
 
 export class MessageValidation implements Validation<Message> {
-  private readonly minLength = 1
-  private readonly maxLength = 100
+  private readonly MIN_LENGTH = 1
+  private readonly MAX_LENGTH = 100
   private errorMessage = ''
 
   validate(message: Message): boolean {
+    this.errorMessage = ''
+
+    // TODO: tire o comentário dessa validação
+    // if(message.fromMe) {
+    //   this.errorMessage = 'Mensagem inválida: mensagens enviadas pelo cliente não são suportadas'
+    //   return false
+    // }
+
     // Validação para número permitido
+    // TODO: remova validação
     if (!message.from.startsWith(PHONE_NUMBER)) {
       this.errorMessage = 'Mensagem inválida: remetente não autorizado'
       return false
@@ -47,8 +56,8 @@ export class MessageValidation implements Validation<Message> {
 
     // Validação para comprimento da mensagem
     const messageLength = message.body?.length || 0
-    if (messageLength < this.minLength || messageLength > this.maxLength) {
-      this.errorMessage = `Mensagem inválida: comprimento deve estar entre ${this.minLength} e ${this.maxLength}`
+    if (messageLength < this.MIN_LENGTH || messageLength > this.MAX_LENGTH) {
+      this.errorMessage = `Mensagem inválida: comprimento deve estar entre ${this.MIN_LENGTH} e ${this.MAX_LENGTH}`
       return false
     }
 

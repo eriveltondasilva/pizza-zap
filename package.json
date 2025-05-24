@@ -17,7 +17,7 @@
     "husky:pre-commit": "",
     "husky:pre-push": "",
     "clean": "rm -rf dist",
-    "fmt": "biome format --staged ./src",
+    "fmt": "biome format ./src",
     "lint": "biome lint ./src",
     "check": "biome check --fix --unsafe --verbose ./src",
     "check:types": "tsc --noEmit",

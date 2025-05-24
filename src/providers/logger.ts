@@ -48,9 +48,9 @@ export class LoggerProvider implements ILogger {
   //#
   private createLogger(): WinstonLogger {
     const logger = createLogger({
-      // defaultMeta: { service: SESSION_NAME },
       level: this.isProduction ? 'info' : 'debug',
       transports: this.createFileTransports(),
+      // defaultMeta: { service: SESSION_NAME },
     })
 
     if (!this.isProduction) logger.add(this.createConsoleTransport())
@@ -77,13 +77,14 @@ export class LoggerProvider implements ILogger {
         maxsize: this.maxSize,
         maxFiles: this.maxFiles,
       }),
-      new transports.File({
-        level: 'info',
-        filename: join(this.logDir, 'combined.log'),
-        format: logFormat,
-        maxsize: this.maxSize,
-        maxFiles: this.maxFiles,
-      }),
+      // TODO: add combined log file
+      // new transports.File({
+      //   level: 'info',
+      //   filename: join(this.logDir, 'combined.log'),
+      //   format: logFormat,
+      //   maxsize: this.maxSize,
+      //   maxFiles: this.maxFiles,
+      // }),
     ]
   }
 

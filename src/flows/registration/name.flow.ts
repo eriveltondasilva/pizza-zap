@@ -1,21 +1,20 @@
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 
 import { FLOWS } from '../../config/enums.js'
-import { isValidName } from '../../utils/validations.js'
+import { NameValidation } from '../../validations/name-validation.js'
 import { BaseFlow } from '../base.flow.js'
 
 import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class RegistrationNameFlow extends BaseFlow {
+  constructor(@inject(NameValidation) private nameValidation: NameValidation) {
+    super()
+  }
+
   public async handle({ message: name, phone }: FlowParams) {
-    if (!isValidName(name)) {
-      return this.responseBuilder
-        .addBold('❌ NOME INVÁLIDO')
-        .addEmptyLine()
-        .addText('Por favor, informe seu nome completo.')
-        .addQuote('Exemplo: "_João da Silva_"')
-        .build()
+    if (!this.nameValidation.validate(name)) {
+      return this.responseBuilder.addText(...this.nameValidation.getError()).build()
     }
 
     this.state.updateContext(phone, {

@@ -1,19 +1,27 @@
-import { inject, injectable } from 'tsyringe'
-import { LoggerProvider } from '../providers/logger.ts'
-
 import type { Validation } from './types.ts'
 
-@injectable()
 export class AddressValidation implements Validation {
-  private readonly minLength = 3
-  private readonly maxLength = 100
-
-  constructor(@inject(LoggerProvider) private logger: LoggerProvider) {}
+  private readonly MIN_LENGTH = 3
+  private readonly MAX_LENGTH = 100
+  private readonly ADDRESS_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,.°º-]+$/
+  private errorMessage: string[] = []
 
   validate(address: string): boolean {
-    if (address.length < this.minLength || address.length > this.maxLength) {
-      const log = `Endereço inválido: deve ter entre ${this.minLength} e ${this.maxLength} caracteres`
-      this.logger.error(log)
+    this.errorMessage = []
+
+    if (address.length < this.MIN_LENGTH || address.length > this.MAX_LENGTH) {
+      this.errorMessage = [
+        `O endereço deve ter entre ${this.MIN_LENGTH} e ${this.MAX_LENGTH} caracteres.`,
+        `Você forneceu um endereço muito ${address.length < this.MIN_LENGTH ? 'curto' : 'longo'}.`,
+      ]
+      return false
+    }
+
+    if (!this.ADDRESS_REGEX.test(address)) {
+      this.errorMessage = [
+        'O endereço contém caracteres inválidos.',
+        'Use apenas letras, números, espaços e símbolos como vírgula, ponto e hífen.',
+      ]
       return false
     }
 
@@ -24,7 +32,7 @@ export class AddressValidation implements Validation {
     return [
       '❌ *ENDEREÇO INVÁLIDO*',
       '',
-      'Por favor, informe seu endereço completo.',
+      ...this.errorMessage,
       '> Exemplo: "_Rua das Flores, n° 83, Centro_"',
     ]
   }
