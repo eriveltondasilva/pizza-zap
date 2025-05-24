@@ -4,7 +4,7 @@ import { LoggerProvider } from '../providers/logger.ts'
 import type { Validation } from './types.ts'
 
 @injectable()
-export class AddressValidation implements Validation<string> {
+export class AddressValidation implements Validation {
   private readonly minLength = 3
   private readonly maxLength = 100
 
@@ -20,7 +20,7 @@ export class AddressValidation implements Validation<string> {
     return true
   }
 
-  getErrorMessage(): string[] {
+  getError(): string[] {
     return [
       '❌ *ENDEREÇO INVÁLIDO*',
       '',

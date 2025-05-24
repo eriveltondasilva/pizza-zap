@@ -20,7 +20,7 @@ export class NameValidation implements Validation<string> {
     return true
   }
 
-  getErrorMessage(): string[] {
+  getError(): string[] {
     return [
       '❌ *NOME INVÁLIDO*',
       '',

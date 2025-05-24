@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "start": "node --env-file=.env dist/index.js",
+    "start": "node --env-file=.env dist/index.cjs",
     "dev": "tsx --env-file=.env src/index.ts",
     "clean": "rm -rf dist",
     "fmt": "biome format ./src",

@@ -26,7 +26,7 @@ export class QuantityValidation implements Validation<number> {
     return true
   }
 
-  getErrorMessage(): string[] {
+  getError(): string[] {
     return ['❌ *QUANTIDADE INVÁLIDA*', 'Por favor, digite um número entre 1 e 10.']
   }
 }

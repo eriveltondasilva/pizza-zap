@@ -1,4 +1,4 @@
-export interface Validation<T> {
+export interface Validation<T = string> {
   validate(data: T): boolean
-  getErrorMessage(): string[]
+  getError(): string | string[]
 }

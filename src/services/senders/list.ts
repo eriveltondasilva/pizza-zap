@@ -1,7 +1,7 @@
 import type { Whatsapp } from '@wppconnect-team/wppconnect'
 import { injectable } from 'tsyringe'
-import type { ISender } from '../../types/interfaces.js'
-import type { ResponseContent, ResponseList } from '../../types/responses.js'
+
+import type { ISender, ResponseContent, ResponseList } from '../../types/index.js'
 
 @injectable()
 export class ListSenderService implements ISender {

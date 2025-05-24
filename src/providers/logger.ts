@@ -25,25 +25,24 @@ export class LoggerProvider implements ILogger {
     this.logger = this.createLogger()
   }
 
-  // ###
   public info(message: string, meta?: LogMeta): void {
     this.logger.info(message, meta)
   }
 
   public ok(message: string, meta?: LogMeta): void {
-    this.logger.info(`✅ ${message}`, meta)
+    this.logger.info(`✅\s${message}`, meta)
   }
 
   public warn(message: string, meta?: LogMeta): void {
-    this.logger.warn(`⚠️ ${message}`, meta)
+    this.logger.warn(`⚠️\s${message}`, meta)
   }
 
   public debug(message: string, meta?: LogMeta): void {
-    this.logger.debug(`⚙️ ${message}`, meta)
+    this.logger.debug(`⚙️\s${message}`, meta)
   }
 
   public error(message: string, meta?: unknown): void {
-    this.logger.error(`❌ ${message}`, meta)
+    this.logger.error(`❌\s${message}`, meta)
   }
 
   //#

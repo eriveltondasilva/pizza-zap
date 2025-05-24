@@ -2,7 +2,6 @@ import type { Message } from '@wppconnect-team/wppconnect'
 import { inject, injectable } from 'tsyringe'
 
 import { MESSAGE_TYPES } from './config/enums.ts'
-
 import { ConversationManager } from './core/conversation-manager.ts'
 import { LoggerProvider, WhatsappClientProvider } from './providers/index.ts'
 import { ListSenderService, TextSenderService } from './services/senders/index.ts'
@@ -51,7 +50,7 @@ export class WhatsappBot implements IWhatsappBot {
   //#
   private async processMessage(message: Message): Promise<void> {
     if (!this.messageValidation.validate(message)) {
-      this.logger.warn(this.messageValidation.getErrorMessage(), {
+      this.logger.warn(this.messageValidation.getError(), {
         from: message.from,
       })
       return
@@ -75,7 +74,7 @@ export class WhatsappBot implements IWhatsappBot {
       this.logger.info('✉️ Mensagem enviada:', { type })
     } catch (error) {
       this.logger.error('Erro no processamento da mensagem:', error)
-      await this.textMessageSender.sendErrorMessage(client, message.from)
+      await this.textMessageSender.sendError(client, message.from)
     }
   }
 }

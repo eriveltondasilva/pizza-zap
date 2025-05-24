@@ -1,27 +1,26 @@
 import { inject, injectable } from 'tsyringe'
+
 import { LoggerProvider } from '../../providers/logger.js'
-import type { CartItem } from '../../types/entities.js'
-import type { FlowState } from '../../types/flows.js'
 import { isEmpty } from '../../utils/is-empty.js'
 import { StateManager } from './manager.js'
 
-/**
- * Serviço responsável por gerenciar o estado do carrinho de compras.
- */
+import type { FlowState, CartItem } from '../../types/index.js'
+
+interface ICartService {
+  addToCart(phone: string, currentState: FlowState, item: CartItem): FlowState
+  removeFromCart(phone: string, currentState: FlowState, itemIndex: number): FlowState
+  clearCart(phone: string, currentState: FlowState): FlowState
+  // getCartTotal(state: FlowState): number // Método comentado no código original
+}
+
+/** Serviço responsável por gerenciar o estado do carrinho de compras. */
 @injectable()
-export class CartService {
+export class CartService implements ICartService {
   constructor(
-    @inject(StateManager) private readonly stateManager: StateManager,
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
+    @inject(StateManager) private stateManager: StateManager,
+    @inject(LoggerProvider) private logger: LoggerProvider,
   ) {}
 
-  /**
-   * Adiciona um item ao carrinho
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param item - Item a ser adicionado
-   * @returns Estado atualizado
-   */
   public addToCart(phone: string, currentState: FlowState, item: CartItem): FlowState {
     if (isEmpty(item)) {
       this.logger.warn('Tentativa de adicionar item vazio ao carrinho')
@@ -39,13 +38,6 @@ export class CartService {
     return updatedState
   }
 
-  /**
-   * Remove um item do carrinho pelo índice
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param itemIndex - Índice do item a ser removido
-   * @returns Estado atualizado
-   */
   public removeFromCart(phone: string, currentState: FlowState, itemIndex: number): FlowState {
     const currentCart = currentState.cart || []
 
@@ -70,12 +62,6 @@ export class CartService {
     return updatedState
   }
 
-  /**
-   * Limpa todos os itens do carrinho
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @returns Estado atualizado
-   */
   public clearCart(phone: string, currentState: FlowState): FlowState {
     const updatedState = {
       ...currentState,

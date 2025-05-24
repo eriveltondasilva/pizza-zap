@@ -15,21 +15,26 @@ const Messages = {
   DELETED: 'Estado removido para usuário',
 }
 
-/**
- * Gerenciador principal para os estados de fluxo
- */
+interface IStateManager {
+  get(phone: string): FlowState
+  set(phone: string, currentState: FlowState): void
+  delete(phone: string): boolean
+  reset(phone: string): FlowState
+  clearAllStates(): void
+  has(phone: string): boolean
+  getSize(): number
+  getAllEntries(): [string, FlowState][]
+  isStateExpired(state: FlowState): boolean
+}
+
+/** Gerenciador principal para os estados de fluxo */
 @singleton()
-export class StateManager {
+export class StateManager implements IStateManager {
   constructor(
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
-    @inject(StateStore) private readonly stateStore: StateStore,
+    @inject(LoggerProvider) private logger: LoggerProvider,
+    @inject(StateStore) private stateStore: StateStore,
   ) {}
 
-  /**
-   * Obtém o estado para um número de telefone, inicializando se necessário
-   * @param phone - Número de telefone do usuário
-   * @returns Estado atual ou novo estado inicializado
-   */
   public get(phone: string): FlowState {
     const state = this.stateStore.get(phone)
 
@@ -46,11 +51,6 @@ export class StateManager {
     return state
   }
 
-  /**
-   * Define ou atualiza o estado para um número de telefone
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado a ser armazenado
-   */
   public set(phone: string, currentState: FlowState): void {
     if (isEmpty(currentState)) {
       this.logger.warn('Tentativa de definir estado vazio', { phone })
@@ -65,11 +65,6 @@ export class StateManager {
     this.stateStore.set(phone, updatedState)
   }
 
-  /**
-   * Remove o estado para um número de telefone
-   * @param phone - Número de telefone do usuário
-   * @returns Verdadeiro se o estado foi removido com sucesso
-   */
   public delete(phone: string): boolean {
     const isDeleted = this.stateStore.delete(phone)
     if (isDeleted) this.logger.debug(Messages.DELETED, { phone })
@@ -77,56 +72,30 @@ export class StateManager {
     return isDeleted
   }
 
-  /**
-   * Reinicia o estado para um número de telefone
-   * @param phone - Número de telefone do usuário
-   * @returns Novo estado inicializado
-   */
   public reset(phone: string): FlowState {
     this.delete(phone)
     this.logger.debug(Messages.RESET, { phone })
     return this.initializeState(phone)
   }
 
-  /**
-   * Remove todos os estados armazenados
-   */
   public clearAllStates(): void {
     this.stateStore.clearAll()
     this.logger.info('🗑️ Todos os estados foram removidos')
   }
 
-  /**
-   * Verifica se existe um estado ativo para um número de telefone
-   * @param phone - Número de telefone do usuário
-   * @returns Verdadeiro se existe um estado ativo
-   */
   public has(phone: string): boolean {
     const state = this.stateStore.get(phone)
     return Boolean(state && !this.isStateExpired(state))
   }
 
-  /**
-   * Retorna o número total de estados armazenados
-   * @returns Número de estados
-   */
   public getSize(): number {
     return this.stateStore.getSize()
   }
 
-  /**
-   * Retorna todos os estados armazenados
-   * @returns Array de pares [telefone, estado]
-   */
   public getAllEntries(): [string, FlowState][] {
     return this.stateStore.getAllEntries()
   }
 
-  /**
-   * Verifica se um estado está expirado com base no tempo de inatividade
-   * @param state - Estado a ser verificado
-   * @returns Verdadeiro se o estado estiver expirado
-   */
   public isStateExpired(state: FlowState): boolean {
     if (!state?.lastInteraction) return true
 
@@ -136,12 +105,7 @@ export class StateManager {
     return currentTime - lastInteractionTime > STATE_EXPIRATION_TIME
   }
 
-  /**
-   * Inicializa um novo estado para um número de telefone
-   * @private
-   * @param phone - Número de telefone do usuário
-   * @returns Estado inicializado
-   */
+//#
   private initializeState(phone: string): FlowState {
     const initialState: FlowState = {
       context: {

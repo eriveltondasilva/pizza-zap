@@ -1,30 +1,33 @@
 import { inject, injectable } from 'tsyringe'
 
-import type { FLOWS } from '../../config/enums.js'
 import { LoggerProvider } from '../../providers/logger.js'
-import type { FlowContext, FlowState } from '../../types/flows.js'
 import { isEmpty } from '../../utils/is-empty.js'
 import { StateManager } from './manager.js'
 
-/**
- * Serviço para gerenciamento do contexto no estado do fluxo
- */
+import type { FLOWS } from '../../config/enums.js'
+import type { FlowContext, FlowState } from '../../types/flows.js'
+
+interface IContextService {
+  updateContext(
+    phone: string,
+    currentState: FlowState,
+    contextUpdates: Partial<FlowContext>,
+  ): FlowState
+  updateFlow(phone: string, currentState: FlowState, flow: FLOWS): FlowState
+  updateData(phone: string, currentState: FlowState, data: FlowContext['data']): FlowState
+  clearData(phone: string, currentState: FlowState): FlowState
+}
+
+/** Serviço para gerenciamento do contexto no estado do fluxo */
 @injectable()
-export class ContextService {
+export class ContextService implements IContextService {
   private readonly MAX_HISTORY_LENGTH = 10
 
   constructor(
-    @inject(StateManager) private readonly stateManager: StateManager,
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
+    @inject(StateManager) private stateManager: StateManager,
+    @inject(LoggerProvider) private logger: LoggerProvider,
   ) {}
 
-  /**
-   * Atualiza o contexto do fluxo
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param contextUpdates - Atualizações parciais para o contexto
-   * @returns Estado atualizado
-   */
   public updateContext(
     phone: string,
     currentState: FlowState,
@@ -59,13 +62,6 @@ export class ContextService {
     return updatedState
   }
 
-  /**
-   * Atualiza o fluxo atual
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param flow - Novo fluxo
-   * @returns Estado atualizado
-   */
   public updateFlow(phone: string, currentState: FlowState, flow: FLOWS): FlowState {
     if (!flow) {
       this.logger.warn('Tentativa de atualizar fluxo com valor inválido')
@@ -74,13 +70,6 @@ export class ContextService {
     return this.updateContext(phone, currentState, { flow })
   }
 
-  /**
-   * Atualiza os dados do contexto
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param data - Novos dados para o contexto
-   * @returns Estado atualizado
-   */
   public updateData(phone: string, currentState: FlowState, data: FlowContext['data']): FlowState {
     if (isEmpty(data)) {
       this.logger.warn('Tentativa de atualizar dados do contexto com dados vazios')
@@ -89,12 +78,6 @@ export class ContextService {
     return this.updateContext(phone, currentState, { data })
   }
 
-  /**
-   * Limpa os dados do contexto mantendo as outras propriedades
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @returns Estado atualizado
-   */
   public clearData(phone: string, currentState: FlowState): FlowState {
     const updatedState = {
       ...currentState,
@@ -110,13 +93,7 @@ export class ContextService {
     return updatedState
   }
 
-  /**
-   * Atualiza o histórico de fluxos quando o fluxo muda
-   * @private
-   * @param currentState - Estado atual do fluxo
-   * @param contextUpdates - Atualizações para o contexto
-   * @returns Histórico atualizado
-   */
+  //#
   private updateHistory(currentState: FlowState, contextUpdates: Partial<FlowContext>): string[] {
     const currentContext = currentState.context
     const currentHistory = currentContext.history || []

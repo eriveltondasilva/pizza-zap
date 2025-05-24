@@ -4,26 +4,24 @@ import { LoggerProvider } from '../../providers/logger.js'
 import { isEmpty } from '../../utils/is-empty.js'
 import { StateManager } from './manager.js'
 
-import type { Customer } from '../../types/entities.js'
-import type { FlowState } from '../../types/flows.js'
+import type { Customer, FlowState } from '../../types/index.js'
 
-/**
- * Serviço para gerenciamento dos dados do cliente no estado do fluxo
- */
+interface ICustomerService {
+  updateCustomer(
+    phone: string,
+    currentState: FlowState,
+    customerUpdates: Partial<Customer>,
+  ): FlowState
+}
+
+/** Serviço para gerenciamento dos dados do cliente no estado do fluxo */
 @injectable()
-export class CustomerService {
+export class CustomerService implements ICustomerService {
   constructor(
-    @inject(StateManager) private readonly stateManager: StateManager,
-    @inject(LoggerProvider) private readonly logger: LoggerProvider,
+    @inject(StateManager) private stateManager: StateManager,
+    @inject(LoggerProvider) private logger: LoggerProvider,
   ) {}
 
-  /**
-   * Atualiza os dados do cliente
-   * @param phone - Número de telefone do usuário
-   * @param currentState - Estado atual do fluxo
-   * @param customerUpdates - Atualizações parciais para os dados do cliente
-   * @returns Estado atualizado
-   */
   public updateCustomer(
     phone: string,
     currentState: FlowState,

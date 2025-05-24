@@ -1,12 +1,9 @@
 import { type Message, MessageType } from '@wppconnect-team/wppconnect'
 import { PHONE_NUMBER } from '../config/constants.ts'
 
-interface Validation {
-  validate(message: Message): boolean
-  getErrorMessage(): string
-}
+import type {Validation} from './types.ts'
 
-export class MessageValidation implements Validation {
+export class MessageValidation implements Validation<Message> {
   private readonly minLength = 1
   private readonly maxLength = 100
   private errorMessage = ''
@@ -58,7 +55,7 @@ export class MessageValidation implements Validation {
     return true
   }
 
-  getErrorMessage(): string {
+  getError(): string {
     return this.errorMessage
   }
 }

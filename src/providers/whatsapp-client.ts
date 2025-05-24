@@ -12,13 +12,15 @@ interface IWhatsappClientProvider {
 @singleton()
 export class WhatsappClientProvider implements IWhatsappClientProvider {
   private client: Whatsapp | null = null
-  private readonly clientOptions: CreateOptions = {
-    session: SESSION_NAME,
-    phoneNumber: PHONE_NUMBER,
-    disableWelcome: true,
-  }
+  private readonly clientOptions: CreateOptions
 
-  constructor(@inject(LoggerProvider) private logger: LoggerProvider) {}
+  constructor(@inject(LoggerProvider) private logger: LoggerProvider) {
+    this.clientOptions = {
+      session: SESSION_NAME,
+      phoneNumber: PHONE_NUMBER,
+      disableWelcome: true,
+    }
+  }
 
   public async getClient(): Promise<Whatsapp> {
     if (!this.client) {
@@ -43,7 +45,7 @@ export class WhatsappClientProvider implements IWhatsappClientProvider {
   private async createClient(): Promise<Whatsapp> {
     try {
       const client = await create(this.clientOptions)
-      this.logger.debug('Cliente inicializado com sucesso')
+      this.logger.info('Cliente inicializado com sucesso')
 
       return client
     } catch (error) {
