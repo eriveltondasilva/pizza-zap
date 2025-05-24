@@ -6,7 +6,7 @@ import { LoggerProvider } from '../../providers/logger.js'
 import { CrustRepository } from '../../repositories/crust.js'
 import { isEmpty } from '../../utils/is-empty.js'
 import { buildCrustList } from '../../utils/list-builder.js'
-import { isValidQuantity } from '../../utils/validations.js'
+import { QuantityValidation } from '../../validations/quantity-validation.ts'
 import { BaseFlow } from '../base.flow.js'
 import { STEP_INDICATORS } from './@pizza.js'
 
@@ -17,6 +17,7 @@ export class PizzaQuantityFlow extends BaseFlow {
   constructor(
     @inject(CrustRepository) private crustRepository: CrustRepository,
     @inject(ListResponseBuilder) private listResponseBuilder: ListResponseBuilder,
+    @inject(QuantityValidation) private quantityValidation: QuantityValidation,
     @inject(LoggerProvider) private logger: LoggerProvider,
   ) {
     super()
@@ -25,11 +26,8 @@ export class PizzaQuantityFlow extends BaseFlow {
   public async handle({ phone, message }: FlowParams) {
     const quantity = Number.parseInt(message, 10)
 
-    if (!isValidQuantity(quantity)) {
-      return this.responseBuilder
-        .addBold('❌ QUANTIDADE INVÁLIDA')
-        .addText('Por favor, digite um número entre 1 e 10.')
-        .build()
+    if (!this.quantityValidation.validate(quantity)) {
+      return this.responseBuilder.addText(...this.quantityValidation.getError()).build()
     }
 
     this.state.updateContext(phone, {

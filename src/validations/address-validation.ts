@@ -33,7 +33,7 @@ export class AddressValidation implements Validation {
       '❌ *ENDEREÇO INVÁLIDO*',
       '',
       ...this.errorMessage,
-      '> Exemplo: "_Rua das Flores, n° 83, Centro_"',
+      '> Exemplo: "_Rua das Flores, n° 99, próximo ao Supermercado São José_"',
     ]
   }
 }

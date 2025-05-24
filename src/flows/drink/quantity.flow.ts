@@ -1,8 +1,8 @@
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 
 import { FLOWS } from '../../config/enums.js'
 import { formatCurrency } from '../../utils/format-currency.js'
-import { isValidQuantity } from '../../utils/validations.js'
+import { QuantityValidation } from '../../validations/quantity-validation.ts'
 import { BaseFlow } from '../base.flow.js'
 import { type ContextData, STEP_INDICATORS } from './@drink.js'
 
@@ -10,14 +10,14 @@ import type { FlowParams } from '../../types/flows.js'
 
 @injectable()
 export class DrinkQuantityFlow extends BaseFlow {
+  constructor(@inject(QuantityValidation) private quantityValidation: QuantityValidation) {
+    super()
+  }
   public async handle({ phone, message, context }: FlowParams) {
     const quantity = Number.parseInt(message, 10)
 
-    if (!isValidQuantity(quantity)) {
-      return this.responseBuilder
-        .addBold('❌ QUANTIDADE INVÁLIDA!')
-        .addText('Por favor, digite um número entre 1 e 10.')
-        .build()
+    if (!this.quantityValidation.validate(quantity)) {
+      return this.responseBuilder.addText(...this.quantityValidation.getError()).build()
     }
 
     const data = context.data as ContextData
