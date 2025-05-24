@@ -14,7 +14,7 @@
     "build": "tsup",
     "start": "node --env-file=.env dist/index.cjs",
     "dev": "tsx --env-file=.env src/index.ts",
-    "husky:pre-commit": "tsc --noEmit && biome format --write --staged ./src && biome lint --write --staged ./src && git add .",
+    "husky:pre-commit": "",
     "husky:pre-push": "",
     "clean": "rm -rf dist",
     "fmt": "biome format --staged ./src",

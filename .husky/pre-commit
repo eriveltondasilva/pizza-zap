@@ -1,1 +1,1 @@
-npm run husky:pre-commit
+tsc --noEmit && biome format --write --staged ./src && biome lint --write --staged ./src && git add .
